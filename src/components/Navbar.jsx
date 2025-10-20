@@ -18,10 +18,23 @@ const Navbar = () => {
 	};
 
 	return (
-		<header className="fixed top-0 w-full flex items-center justify-center p-3 bg-[#fff] shadow-sm">
+		<header className="fixed top-0 w-full flex items-center justify-center p-3 bg-[#fff] shadow-sm lg:bg-transparent lg:shadow-none z-10">
 			<nav className="max-w-6xl mx-auto w-full flex items-center justify-between">
 				<Logo />
 				<span className="hidden lg:flex items-center gap-6">
+					<Link
+						to={"/"}
+						onClick={() => {
+							handleSetActive("home");
+						}}
+						className={`${
+							activeLink === "home"
+								? "text-[#D69E2E]"
+								: `${pallete.colors.darkText}`
+						} font-semibold text-sm capitalize cursor-pointer`}
+					>
+						Home
+					</Link>
 					{navLinks.map((link) => {
 						return (
 							<ScrollLink
@@ -47,13 +60,13 @@ const Navbar = () => {
 				<span className="hidden lg:flex items-center gap-2">
 					<Link
 						to={"/signin"}
-						className={`h-[43px] w-[89px] font-medium text-sm rounded-md ${pallete.colors.darkText}`}
+						className={`h-[43px] w-[89px] font-medium text-sm rounded-md ${pallete.colors.darkText} flex items-center justify-center`}
 					>
 						Sign in
 					</Link>
 					<Link
 						to={"/signup"}
-						className={`${pallete.colors.mainBg} h-[43px] w-[89px] font-medium text-sm text-[#fff] rounded-md`}
+						className={`${pallete.colors.mainBg} h-[43px] w-[89px] font-medium text-sm text-[#fff] rounded-md flex items-center justify-center`}
 					>
 						Sign Up
 					</Link>

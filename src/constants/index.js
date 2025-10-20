@@ -1,8 +1,8 @@
 export const navLinks = [
-	{
-		id: "home",
-		name: "home",
-	},
+	// {
+	// 	id: "home",
+	// 	name: "home",
+	// },
 	{
 		id: "services",
 		name: "services",

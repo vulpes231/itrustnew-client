@@ -4,3 +4,12 @@
 body {
 	font-family: "Nunito", sans-serif;
 }
+
+.bg-overlay-pattern {
+	background-image: url(../bg-pattern.png);
+	background-color: transparent;
+	background-position: center;
+	background-size: cover;
+	opacity: 0.2;
+	z-index: 1;
+}
