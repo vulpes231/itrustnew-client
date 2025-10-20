@@ -28,3 +28,14 @@ export const navLinks = [
 		name: "contact",
 	},
 ];
+
+export const pallete = {
+	colors: {
+		darkText: "text-[#212529]",
+		mainBg: "bg-[#5162be]",
+		greyText: "text-[#878a99]",
+	},
+	borders: {
+		light: "border-[#e9ebec]",
+	},
+};
