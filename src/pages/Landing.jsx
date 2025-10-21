@@ -26,6 +26,7 @@ const Landing = () => {
 				</h6>
 				<span className="flex  items-center gap-4">
 					<Link
+						to={"/signup"}
 						className={`flex items-center justify-center gap-2 capitalize h-[43px] ${pallete.colors.mainBg} text-[#fff] w-[138px] rounded-sm`}
 					>
 						{" "}

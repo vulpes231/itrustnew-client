@@ -6,6 +6,7 @@ import { MdClose, MdMenu } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { selectNavSlice, setToggle } from "../features/navSlice";
 import { Link } from "react-router-dom";
+import Mobilemenu from "./nav/Mobilemenu";
 
 const Navbar = () => {
 	const dispatch = useDispatch();
@@ -82,6 +83,7 @@ const Navbar = () => {
 					</button>
 				</span>
 			</nav>
+			{toggle && <Mobilemenu onClose={() => dispatch(setToggle())} />}
 		</header>
 	);
 };
