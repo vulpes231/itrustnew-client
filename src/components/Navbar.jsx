@@ -18,6 +18,18 @@ const Navbar = () => {
 		setActiveLink(linkId);
 	};
 
+	const handleSetToggle = (e) => {
+		// console.log("clicked toggle");
+		if (e && e.stopPropagation) {
+			e.stopPropagation();
+		}
+		dispatch(setToggle());
+	};
+
+	const handleCloseMenu = () => {
+		dispatch(setToggle());
+	};
+
 	return (
 		<header className="fixed top-0 w-full flex items-center justify-center p-3 bg-[#fff] shadow-sm lg:bg-transparent lg:shadow-none z-10">
 			<nav className="max-w-6xl mx-auto w-full flex items-center justify-between">
@@ -74,16 +86,20 @@ const Navbar = () => {
 				</span>
 				<span className="lg:hidden">
 					<button
-						onClick={() => dispatch(setToggle())}
+						onClick={handleSetToggle}
 						className={`border ${
 							pallete.borders.light
 						} py-0.5 px-2 rounded-sm ${toggle ? "border-2 border-black" : ""}`}
 					>
-						<MdMenu className="w-7 h-7" />
+						{toggle ? (
+							<MdClose className="w-7 h-7" />
+						) : (
+							<MdMenu className="w-7 h-7" />
+						)}
 					</button>
 				</span>
 			</nav>
-			{toggle && <Mobilemenu onClose={() => dispatch(setToggle())} />}
+			{toggle && <Mobilemenu onClose={handleCloseMenu} />}
 		</header>
 	);
 };
