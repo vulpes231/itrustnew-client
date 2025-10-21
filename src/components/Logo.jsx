@@ -1,8 +1,13 @@
 import React from "react";
 import { logo } from "../assets";
+import { Link } from "react-router-dom";
 
-const Logo = () => {
-	return <img src={logo} alt="" className="w-[120px]" />;
+const Logo = ({ customClass }) => {
+	return (
+		<Link to={"/"}>
+			<img src={logo} alt="itrust-logo" className={`${customClass}`} />
+		</Link>
+	);
 };
 
 export default Logo;

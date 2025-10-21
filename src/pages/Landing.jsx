@@ -3,10 +3,12 @@ import { pallete } from "../constants";
 import { Link } from "react-router-dom";
 import { MdArrowForward } from "react-icons/md";
 import { IoMdEye } from "react-icons/io";
+import { Navbar } from "../components";
 
 const Landing = () => {
 	return (
 		<section className="mt-[65px] p-1 z-10">
+			<Navbar />
 			{/* relative z-10 */}
 			<div className="bg-overlay-pattern absolute w-full h-screen top-0 right-0 left-0 bottom-0 z-0" />
 			<div className="flex flex-col gap-6 items-center justify-center py-16 lg:py-28 relative z-1">

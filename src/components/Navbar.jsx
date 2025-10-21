@@ -33,7 +33,7 @@ const Navbar = () => {
 	return (
 		<header className="fixed top-0 w-full flex items-center justify-center p-3 bg-[#fff] shadow-sm lg:bg-transparent lg:shadow-none z-10">
 			<nav className="max-w-6xl mx-auto w-full flex items-center justify-between">
-				<Logo />
+				<Logo customClass={"w-[120px]"} />
 				<span className="hidden lg:flex items-center gap-6">
 					<Link
 						to={"/"}
