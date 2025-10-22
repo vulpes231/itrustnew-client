@@ -39,3 +39,15 @@ export const pallete = {
 		light: "border-[#e9ebec]",
 	},
 };
+
+export function handleFormChange(e, form, setForm) {
+	const { name, value } = e.target;
+	setForm({ ...form, [name]: value });
+}
+
+export function getAccessToken() {
+	return sessionStorage.getItem("token") || null;
+}
+
+export const devUrl = "";
+export const liveUrl = "https://trustcloud.server";

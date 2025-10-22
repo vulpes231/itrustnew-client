@@ -1,9 +1,44 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Custominput, Logo } from "../components";
 import { Link } from "react-router-dom";
 import { pallete } from "../constants";
+import { useMutation } from "@tanstack/react-query";
+import { loginUser } from "../services/authService";
 
 const Signin = () => {
+	const [form, setForm] = useState({
+		email: "",
+		password: "",
+	});
+
+	const [error, setError] = useState("");
+
+	const mutation = useMutation({
+		mutationFn: loginUser,
+		onError: (err) => {
+			setError(err);
+		},
+		onSuccess: (data) => {
+			console.log(data);
+		},
+	});
+
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		console.log(form);
+		mutation.mutate(form);
+	};
+
+	useEffect(() => {
+		let timeout;
+		if (error) {
+			timeout = setTimeout(() => {
+				mutation.reset();
+			}, 3000);
+		}
+		return () => clearTimeout(timeout);
+	}, [error]);
+
 	return (
 		<section className="p-3 bg-slate-50 relative h-screen">
 			<div className="bg-[#5162be]/90 absolute w-full h-[350px] top-0 right-0 left-0 bottom-0 z-0 backdrop-blur-sm" />
@@ -22,24 +57,18 @@ const Signin = () => {
 						</h6>
 					</span>
 
-					<Custominput
-						// optional={true}
-						label={"email"}
-						placeHolder={"Enter email"}
-					/>
+					<Custominput label={"email"} placeHolder={"Enter email"} />
 
-					<Custominput
-						// optional={true}
-						label={"password"}
-						placeHolder={"Enter password"}
-					/>
+					<Custominput label={"password"} placeHolder={"Enter password"} />
 
 					<div className="flex items-center justify-between">
 						<span className="flex items-center gap-1">
 							<input type="checkbox" className={`${pallete.borders.light}`} />
-							<small>remember me</small>
+							<small>Remember me</small>
 						</span>
-						<Link>Forgot password</Link>
+						<Link className="text-[#5162be] font-normal text-sm underline">
+							Forgot password
+						</Link>
 					</div>
 
 					<button className="bg-[#5162be] text-white h-[40px] capitalize font-semibold mb-4 rounded-sm">
