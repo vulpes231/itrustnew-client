@@ -6,13 +6,15 @@ const styles = {
 	span: "flex flex-col lg:flex-row w-full gap-2 ",
 };
 
-const Signup = () => {
+const Contact = () => {
 	const navigate = useNavigate();
 
 	function handleNext() {
-		navigate("/contact");
+		navigate("/personal");
 	}
-
+	function handlePrev() {
+		navigate("/signup");
+	}
 	return (
 		<section className="p-3 bg-slate-50 relative">
 			<div className="bg-[#5162be]/90 absolute w-full h-[350px] top-0 right-0 left-0 bottom-0 z-0 backdrop-blur-sm" />
@@ -24,37 +26,40 @@ const Signup = () => {
 				<div className="bg-white shadow-sm py-6 px-8 flex flex-col gap-6 w-full max-w-xl mx-auto rounded-sm lg:rounded-md">
 					<span className="flex flex-col items-center gap-3 pt-4">
 						<h3 className="text-xl text-[#5162be] capitalize font-semibold">
-							create new account
+							contact information
 						</h3>
 						<h6 className="text-[#939393] font-light text-sm">
-							Sign up to get started with itrust{" "}
+							Let us get to know you.
 						</h6>
 					</span>
 					<span className={styles.span}>
-						<Custominput optional={true} label={"firstname"} />
-						<Custominput optional={true} label={"lastname"} />
+						<Custominput optional={true} label={"Country"} />
+						<Custominput optional={true} label={"Phone"} />
 					</span>
 					<span className={styles.span}>
-						<Custominput optional={true} label={"email"} />
-						<Custominput optional={true} label={"username"} />
-					</span>
-					<span className={styles.span}>
-						<Custominput optional={true} label={"password"} />
-						<Custominput optional={true} label={"confirm password"} />
+						<Custominput optional={true} label={"street"} />
+						<Custominput optional={true} label={"city"} />
 					</span>
 
-					<small className="flex whitespace-nowrap gap-1 text-[#939393] font-light text-sm">
-						By registering you agree to the Itrust{" "}
-						<Link className="underline text-[#5162be] font-semibold">
-							Terms of use
-						</Link>
-					</small>
-					<button
-						onClick={handleNext}
-						className="bg-[#5162be] text-white h-[40px] capitalize font-semibold mb-4 rounded-sm"
-					>
-						next
-					</button>
+					<div className={styles.span}>
+						<Custominput optional={true} label={"state"} />
+						<Custominput optional={true} label={"zipcode"} />
+					</div>
+
+					<div className="flex items-center gap-4">
+						<button
+							onClick={handleNext}
+							className="bg-[#5162be] text-white h-[40px] capitalize font-semibold mb-4 rounded-sm w-full"
+						>
+							next
+						</button>
+						<button
+							onClick={handlePrev}
+							className="bg-[#5162be] text-white h-[40px] capitalize font-semibold mb-4 rounded-sm w-full"
+						>
+							previous
+						</button>
+					</div>
 				</div>
 				<div className="flex flex-col items-center gap-3">
 					<small className="text-[#212529] font-light text-sm">
@@ -76,4 +81,4 @@ const Signup = () => {
 	);
 };
 
-export default Signup;
+export default Contact;

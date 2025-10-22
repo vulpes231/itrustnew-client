@@ -1,9 +1,17 @@
 import React from "react";
 import { pallete } from "../constants";
 
-const Custominput = ({ optional, type, value, onChange, name, label }) => {
+const Custominput = ({
+	optional,
+	type,
+	value,
+	onChange,
+	name,
+	label,
+	placeHolder,
+}) => {
 	return (
-		<div>
+		<div className="w-full">
 			<label
 				htmlFor=""
 				className="flex items-center whitespace-nowrap capitalize"
@@ -17,6 +25,7 @@ const Custominput = ({ optional, type, value, onChange, name, label }) => {
 				value={value}
 				onChange={onChange}
 				name={name}
+				placeholder={placeHolder}
 			/>
 		</div>
 	);
