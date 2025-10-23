@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Custominput, Logo } from "../components";
 import { Link, useNavigate } from "react-router-dom";
+import { handleFormChange } from "../constants";
 
 const styles = {
 	span: "flex flex-col lg:flex-row w-full gap-2 ",
@@ -8,13 +9,45 @@ const styles = {
 
 const Contact = () => {
 	const navigate = useNavigate();
+	const savedContactForm = JSON.parse(sessionStorage.getItem("contactForm"));
 
-	function handleNext() {
+	const [form, setForm] = useState({
+		country: savedContactForm?.country || "",
+		phone: savedContactForm?.phone || "",
+		street: savedContactForm?.street || "",
+		city: savedContactForm?.city || "",
+		state: savedContactForm?.state || "",
+		zipcode: savedContactForm?.zipcode || "",
+	});
+
+	const [error, setError] = useState({});
+
+	function handleNext(e) {
+		e.preventDefault();
+		for (const key in form) {
+			if (form[key] === "") {
+				setError({ key: `${key} required!` });
+				return;
+			}
+		}
+		sessionStorage.setItem("contactForm", JSON.stringify(form));
 		navigate("/personal");
 	}
+
 	function handlePrev() {
 		navigate("/signup");
 	}
+
+	useEffect(() => {
+		let timeout;
+		if (error) {
+			timeout = setTimeout(() => {
+				setError({});
+			}, 3000);
+		}
+		return () => clearTimeout(timeout);
+	}, [error]);
+
 	return (
 		<section className="p-3 bg-slate-50 relative">
 			<div className="bg-[#5162be]/90 absolute w-full h-[350px] top-0 right-0 left-0 bottom-0 z-0 backdrop-blur-sm" />
@@ -33,17 +66,53 @@ const Contact = () => {
 						</h6>
 					</span>
 					<span className={styles.span}>
-						<Custominput optional={true} label={"Country"} />
-						<Custominput optional={true} label={"Phone"} />
+						<Custominput
+							optional={false}
+							label={"Country"}
+							onChange={() => handleFormChange(e, form, setForm)}
+							value={form.country}
+							name={"country"}
+						/>
+						<Custominput
+							optional={false}
+							label={"Phone"}
+							onChange={() => handleFormChange(e, form, setForm)}
+							value={form.phone}
+							name={"phone"}
+						/>
 					</span>
 					<span className={styles.span}>
-						<Custominput optional={true} label={"street"} />
-						<Custominput optional={true} label={"city"} />
+						<Custominput
+							optional={false}
+							label={"street"}
+							onChange={() => handleFormChange(e, form, setForm)}
+							value={form.street}
+							name={"street"}
+						/>
+						<Custominput
+							optional={false}
+							label={"city"}
+							onChange={() => handleFormChange(e, form, setForm)}
+							value={form.city}
+							name={"city"}
+						/>
 					</span>
 
 					<div className={styles.span}>
-						<Custominput optional={true} label={"state"} />
-						<Custominput optional={true} label={"zipcode"} />
+						<Custominput
+							optional={false}
+							label={"state"}
+							onChange={() => handleFormChange(e, form, setForm)}
+							value={form.state}
+							name={"state"}
+						/>
+						<Custominput
+							optional={false}
+							label={"zipcode"}
+							onChange={() => handleFormChange(e, form, setForm)}
+							value={form.zipcode}
+							name={"zipcode"}
+						/>
 					</div>
 
 					<div className="flex items-center gap-4">
@@ -72,7 +141,6 @@ const Contact = () => {
 						</Link>
 					</small>
 					<h6 className="text-[#939393] text-md font-normal">
-						{" "}
 						&copy; {new Date().getFullYear()} Itrust. All Rights Reserved
 					</h6>
 				</div>

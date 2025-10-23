@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Custominput, Logo } from "../components";
 import { Link } from "react-router-dom";
-import { pallete } from "../constants";
+import { handleFormChange, pallete } from "../constants";
 import { useMutation } from "@tanstack/react-query";
 import { loginUser } from "../services/authService";
+import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 
 const Signin = () => {
 	const [form, setForm] = useState({
@@ -12,6 +13,7 @@ const Signin = () => {
 	});
 
 	const [error, setError] = useState("");
+	const [showPass, setShowPass] = useState(false);
 
 	const mutation = useMutation({
 		mutationFn: loginUser,
@@ -26,13 +28,14 @@ const Signin = () => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		console.log(form);
-		mutation.mutate(form);
+		// mutation.mutate(form);
 	};
 
 	useEffect(() => {
 		let timeout;
 		if (error) {
 			timeout = setTimeout(() => {
+				setError("");
 				mutation.reset();
 			}, 3000);
 		}
@@ -47,7 +50,10 @@ const Signin = () => {
 					<Logo customClass={"w-[130px]"} />
 					<h6 className={`text-[#fff]`}>Grow your portfolio with confidence</h6>
 				</span>
-				<div className="bg-white shadow-sm py-6 px-8 flex flex-col gap-6 w-full max-w-md mx-auto rounded-sm lg:rounded-md">
+				<form
+					onSubmit={handleSubmit}
+					className="bg-white shadow-sm py-6 px-8 flex flex-col gap-6 w-full max-w-md mx-auto rounded-sm lg:rounded-md"
+				>
 					<span className="flex flex-col items-center gap-3 pt-4">
 						<h3 className="text-xl text-[#5162be] capitalize font-semibold">
 							welcome back!
@@ -57,9 +63,30 @@ const Signin = () => {
 						</h6>
 					</span>
 
-					<Custominput label={"email"} placeHolder={"Enter email"} />
+					<Custominput
+						label={"email"}
+						placeHolder={"Enter email"}
+						onChange={(e) => handleFormChange(e, form, setForm)}
+						value={form.email}
+						name={"email"}
+					/>
 
-					<Custominput label={"password"} placeHolder={"Enter password"} />
+					<div className="relative">
+						<Custominput
+							label={"password"}
+							placeHolder={"Enter password"}
+							onChange={(e) => handleFormChange(e, form, setForm)}
+							value={form.password}
+							name={"password"}
+							type={showPass ? "text" : "password"}
+						/>
+						<span
+							onClick={() => setShowPass((prev) => !prev)}
+							className="absolute top-[36px] right-[10px]"
+						>
+							{showPass ? <IoMdEye /> : <IoMdEyeOff />}
+						</span>
+					</div>
 
 					<div className="flex items-center justify-between">
 						<span className="flex items-center gap-1">
@@ -71,10 +98,13 @@ const Signin = () => {
 						</Link>
 					</div>
 
-					<button className="bg-[#5162be] text-white h-[40px] capitalize font-semibold mb-4 rounded-sm">
+					<button
+						type="submit"
+						className="bg-[#5162be] text-white h-[40px] capitalize font-semibold mb-4 rounded-sm hover:bg-[#5162be]/80"
+					>
 						sign in
 					</button>
-				</div>
+				</form>
 				<div className="flex flex-col items-center gap-3">
 					<small className="text-[#212529] font-light text-sm flex items-center gap-1">
 						Don't have an account?
