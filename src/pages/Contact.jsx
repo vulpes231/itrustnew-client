@@ -9,7 +9,12 @@ const styles = {
 
 const Contact = () => {
 	const navigate = useNavigate();
-	const savedContactForm = JSON.parse(sessionStorage.getItem("contactForm"));
+	let savedContactForm = null;
+	try {
+		savedContactForm = JSON.parse(sessionStorage.getItem("contactForm"));
+	} catch (err) {
+		console.error("Failed to parse saved contact form:", err);
+	}
 
 	const [form, setForm] = useState({
 		country: savedContactForm?.country || "",
@@ -24,12 +29,17 @@ const Contact = () => {
 
 	function handleNext(e) {
 		e.preventDefault();
+
+		const newErrors = {};
 		for (const key in form) {
-			if (form[key] === "") {
-				setError({ key: `${key} required!` });
-				return;
-			}
+			if (!form[key]) newErrors[key] = `${key} is required!`;
 		}
+
+		if (Object.keys(newErrors).length > 0) {
+			setError(newErrors);
+			return;
+		}
+
 		sessionStorage.setItem("contactForm", JSON.stringify(form));
 		navigate("/personal");
 	}
@@ -56,7 +66,10 @@ const Contact = () => {
 					<Logo customClass={"w-[130px]"} />
 					<h6 className={`text-[#fff]`}>Grow your portfolio with confidence</h6>
 				</span>
-				<div className="bg-white shadow-sm py-6 px-8 flex flex-col gap-6 w-full max-w-xl mx-auto rounded-sm lg:rounded-md">
+				<form
+					onSubmit={handleNext}
+					className="bg-white shadow-sm py-6 px-8 flex flex-col gap-6 w-full max-w-xl mx-auto rounded-sm lg:rounded-md"
+				>
 					<span className="flex flex-col items-center gap-3 pt-4">
 						<h3 className="text-xl text-[#5162be] capitalize font-semibold">
 							contact information
@@ -67,69 +80,70 @@ const Contact = () => {
 					</span>
 					<span className={styles.span}>
 						<Custominput
-							optional={false}
 							label={"Country"}
-							onChange={() => handleFormChange(e, form, setForm)}
+							onChange={(e) => handleFormChange(e, form, setForm)}
 							value={form.country}
 							name={"country"}
+							error={error.country}
 						/>
 						<Custominput
-							optional={false}
 							label={"Phone"}
-							onChange={() => handleFormChange(e, form, setForm)}
+							onChange={(e) => handleFormChange(e, form, setForm)}
 							value={form.phone}
 							name={"phone"}
+							error={error.phone}
 						/>
 					</span>
 					<span className={styles.span}>
 						<Custominput
-							optional={false}
 							label={"street"}
-							onChange={() => handleFormChange(e, form, setForm)}
+							onChange={(e) => handleFormChange(e, form, setForm)}
 							value={form.street}
 							name={"street"}
+							error={error.street}
 						/>
 						<Custominput
-							optional={false}
-							label={"city"}
-							onChange={() => handleFormChange(e, form, setForm)}
-							value={form.city}
-							name={"city"}
+							label={"state"}
+							onChange={(e) => handleFormChange(e, form, setForm)}
+							value={form.state}
+							name={"state"}
+							error={error.state}
 						/>
 					</span>
 
 					<div className={styles.span}>
 						<Custominput
-							optional={false}
-							label={"state"}
-							onChange={() => handleFormChange(e, form, setForm)}
-							value={form.state}
-							name={"state"}
+							label={"city"}
+							onChange={(e) => handleFormChange(e, form, setForm)}
+							value={form.city}
+							name={"city"}
+							error={error.city}
 						/>
 						<Custominput
-							optional={false}
 							label={"zipcode"}
-							onChange={() => handleFormChange(e, form, setForm)}
+							onChange={(e) => handleFormChange(e, form, setForm)}
 							value={form.zipcode}
 							name={"zipcode"}
+							error={error.zipcode}
 						/>
 					</div>
 
 					<div className="flex items-center gap-4">
 						<button
-							onClick={handleNext}
+							type="submit"
 							className="bg-[#5162be] text-white h-[40px] capitalize font-semibold mb-4 rounded-sm w-full"
 						>
 							next
 						</button>
 						<button
+							type="button"
 							onClick={handlePrev}
 							className="bg-[#5162be] text-white h-[40px] capitalize font-semibold mb-4 rounded-sm w-full"
 						>
 							previous
 						</button>
 					</div>
-				</div>
+				</form>
 				<div className="flex flex-col items-center gap-3">
 					<small className="text-[#212529] font-light text-sm">
 						Already have an account?{" "}
