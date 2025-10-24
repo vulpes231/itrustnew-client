@@ -19,7 +19,7 @@ const Landing = () => {
 					<span className={`text-[#D69E2E]`}> Itrust</span>
 				</h3>
 				<h6
-					className={`${pallete.colors.greyText} text-center lg:max-w-2xl lg:mx-auto`}
+					className={`${pallete.colors.greyText} text-center w-full max-w-3xl mx-auto`}
 				>
 					Itrust is a fully responsive, premium investment app designed to
 					empower users to grow, manage, and track their wealth effortlessly.
