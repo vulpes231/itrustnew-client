@@ -1,5 +1,6 @@
 import Custominput from "./Custominput";
 import Customselect from "./Customselect";
+import Loadingmodal from "./Loadingmodal";
 import Logo from "./Logo";
 import Navbar from "./Navbar";
 import Mobilemenu from "./nav/Mobilemenu";
@@ -14,4 +15,5 @@ export {
 	Customselect,
 	Errortoast,
 	Successtoast,
+	Loadingmodal,
 };

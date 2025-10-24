@@ -4,7 +4,7 @@ import { Logo } from "../components";
 
 const styles = {
 	input:
-		"rounded-sm bg-gray-300 w-full h-[60px] p-2 outline-none text-center text-xl font-semibold",
+		"rounded-sm bg-gray-200 w-full h-[60px] p-2 outline-none text-center text-xl font-semibold",
 	inputFocus:
 		"rounded-sm bg-gray-200 w-full h-[60px] p-2 outline-none ring-2 ring-[#5162be] text-center text-xl font-semibold",
 };
@@ -141,7 +141,7 @@ const Verifymail = () => {
 						className={`h-[50px] capitalize font-semibold mb-4 rounded-sm w-full transition-colors ${
 							isFormComplete
 								? "bg-[#5162be] text-white hover:bg-[#5162be]/80"
-								: "bg-gray-300 text-gray-500 cursor-not-allowed"
+								: "bg-gray-300 text-gray-600 cursor-not-allowed"
 						}`}
 					>
 						Confirm

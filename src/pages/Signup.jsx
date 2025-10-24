@@ -25,6 +25,7 @@ const Signup = () => {
 	});
 
 	const [error, setError] = useState({});
+
 	const navigate = useNavigate();
 
 	function handleNext(e) {
@@ -35,7 +36,6 @@ const Signup = () => {
 			if (!form[key]) newErrors[key] = `${key} is required!`;
 		}
 
-		// Password match validation
 		if (form.password !== form.confirmPassword) {
 			newErrors.confirmPassword = "Passwords do not match!";
 		}

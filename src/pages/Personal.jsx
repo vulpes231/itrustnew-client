@@ -1,7 +1,16 @@
-import React, { useState } from "react";
-import { Custominput, Customselect, Logo } from "../components";
+import React, { useEffect, useState } from "react";
+import {
+	Custominput,
+	Customselect,
+	Errortoast,
+	Loadingmodal,
+	Logo,
+	Successtoast,
+} from "../components";
 import { Link, useNavigate } from "react-router-dom";
 import { handleFormChange } from "../constants";
+import { useMutation } from "@tanstack/react-query";
+import { registerUser } from "../services/authService";
 
 const styles = {
 	span: "flex flex-col lg:flex-row w-full gap-2 ",
@@ -17,21 +26,60 @@ const Personal = () => {
 		nationality: "",
 		referral: "",
 	});
+	const [apiError, setApiError] = useState("");
 
 	const contactForm = JSON.parse(sessionStorage.getItem("contactForm"));
 	const userForm = JSON.parse(sessionStorage.getItem("userForm"));
 
-	const [error, setError] = useState("");
+	const [error, setError] = useState({});
+
+	const mutation = useMutation({
+		mutationFn: registerUser,
+		onSuccess: (data) => {
+			console.log(data);
+		},
+		onError: (err) => {
+			setApiError(err);
+		},
+	});
 
 	function handleSubmit(e) {
 		e.preventDefault();
+		const newErrors = {};
+
+		for (const key in form) {
+			if (!form[key]) newErrors[key] = `${key} is required!`;
+		}
+
+		if (Object.keys(error).length > 0) {
+			setError(newErrors);
+			return;
+		}
+
 		const formData = { ...contactForm, ...userForm, ...form };
 		console.log(formData);
+		// mutation.mutate(formData);
 	}
 
 	function handlePrev() {
 		navigate("/contact");
 	}
+
+	useEffect(() => {
+		if (Object.keys(error).length > 0 || apiError) {
+			const timeout = setTimeout(() => setError({}), 3000);
+			return () => clearTimeout(timeout);
+		}
+	}, [error]);
+
+	useEffect(() => {
+		if (mutation.isSuccess) {
+			const timeout = setTimeout(() => {
+				navigate("/verifyemail");
+			}, 3000);
+			return () => clearTimeout(timeout);
+		}
+	}, [mutation.isSuccess]);
 
 	return (
 		<section className="p-3 bg-slate-50 relative">
@@ -154,6 +202,25 @@ const Personal = () => {
 					</h6>
 				</div>
 			</div>
+			{apiError && (
+				<Errortoast
+					msg={apiError}
+					onClose={() => {
+						setApiError("");
+						mutation.reset();
+					}}
+					duration={3000}
+				/>
+			)}
+
+			{mutation.isSuccess && (
+				<Successtoast
+					msg={"User created successfully."}
+					onClose={() => mutation.reset()}
+					duration={3000}
+				/>
+			)}
+			{mutation.isPending && <Loadingmodal />}
 		</section>
 	);
 };
