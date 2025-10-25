@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Custominput, Logo } from "../components";
+import { Custominput, Customselect, Logo } from "../components";
 import { Link, useNavigate } from "react-router-dom";
 import { handleFormChange } from "../constants";
+import { useQuery } from "@tanstack/react-query";
+import { getCountries, getFilteredStates } from "../services/locationService";
 
 const styles = {
 	span: "flex flex-col lg:flex-row w-full gap-2 ",
@@ -26,6 +28,27 @@ const Contact = () => {
 	});
 
 	const [error, setError] = useState({});
+
+	const {
+		data: countries,
+		isLoading: getCountriesLoading,
+		isError: getCountriesError,
+		error: countriesError,
+	} = useQuery({
+		queryFn: getCountries,
+		queryKey: ["countries"],
+	});
+
+	const {
+		data: states,
+		isLoading: getStatesLoading,
+		isError: getStatesError,
+		error: statesError,
+	} = useQuery({
+		queryFn: () => getFilteredStates(form.country),
+		queryKey: ["states", form.country],
+		enabled: !!form.country,
+	});
 
 	function handleNext(e) {
 		e.preventDefault();
@@ -79,12 +102,13 @@ const Contact = () => {
 						</h6>
 					</span>
 					<span className={styles.span}>
-						<Custominput
+						<Customselect
 							label={"Country"}
 							onChange={(e) => handleFormChange(e, form, setForm)}
 							value={form.country}
 							name={"country"}
 							error={error.country}
+							options={countries}
 						/>
 						<Custominput
 							label={"Phone"}
@@ -102,12 +126,13 @@ const Contact = () => {
 							name={"street"}
 							error={error.street}
 						/>
-						<Custominput
+						<Customselect
 							label={"state"}
 							onChange={(e) => handleFormChange(e, form, setForm)}
 							value={form.state}
 							name={"state"}
 							error={error.state}
+							options={states}
 						/>
 					</span>
 

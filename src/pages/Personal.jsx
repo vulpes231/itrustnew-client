@@ -9,8 +9,9 @@ import {
 } from "../components";
 import { Link, useNavigate } from "react-router-dom";
 import { handleFormChange } from "../constants";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { registerUser } from "../services/authService";
+import { getCurrencies, getNationalities } from "../services/locationService";
 
 const styles = {
 	span: "flex flex-col lg:flex-row w-full gap-2 ",
@@ -41,6 +42,26 @@ const Personal = () => {
 		onError: (err) => {
 			setApiError(err);
 		},
+	});
+
+	const {
+		data: currencies,
+		isLoading: getCurrenciesLoading,
+		isError: getCurrenciesError,
+		error: currenciesError,
+	} = useQuery({
+		queryFn: getCurrencies,
+		queryKey: ["currencies"],
+	});
+
+	const {
+		data: nationalities,
+		isLoading: getNationalitiesLoading,
+		isError: getNationalitiesError,
+		error: nationalitiesError,
+	} = useQuery({
+		queryFn: getNationalities,
+		queryKey: ["nationalities"],
 	});
 
 	function handleSubmit(e) {
@@ -116,12 +137,7 @@ const Personal = () => {
 							value={form.currency}
 							name={"currency"}
 							error={error.currency}
-							options={[
-								{ id: "usd", title: "usd" },
-								{ id: "eur", title: "eur" },
-								{ id: "cad", title: "cad" },
-								{ id: "gbp", title: "gbp" },
-							]}
+							options={currencies}
 						/>
 					</span>
 					<span className={styles.span}>
@@ -153,12 +169,13 @@ const Personal = () => {
 					</span>
 
 					<div className={styles.span}>
-						<Custominput
+						<Customselect
 							label={"nationality"}
 							onChange={(e) => handleFormChange(e, form, setForm)}
 							value={form.nationality}
 							name={"nationality"}
 							error={error.nationality}
+							options={nationalities}
 						/>
 						<Custominput
 							label={"referral code(optional)"}

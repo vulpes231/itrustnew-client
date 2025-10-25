@@ -1,8 +1,8 @@
 import axios from "axios";
-import { getAccessToken, liveUrl } from "../constants";
+import { devUrl, getAccessToken, liveUrl } from "../constants";
 
 export const api = axios.create({
-	baseURL: liveUrl,
+	baseURL: devUrl,
 	headers: {
 		"Content-Type": "application/json",
 	},
