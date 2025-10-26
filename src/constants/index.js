@@ -49,6 +49,10 @@ export function getAccessToken() {
 	return sessionStorage.getItem("token") || null;
 }
 
+export function getAccountSettings() {
+	return JSON.parse(sessionStorage.getItem("user")) || null;
+}
+
 export const devUrl = "http://localhost:5000";
 export const liveUrl = "https://trustcloud.server";
 

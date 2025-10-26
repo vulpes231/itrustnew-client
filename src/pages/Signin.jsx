@@ -24,17 +24,17 @@ const Signin = () => {
 	const mutation = useMutation({
 		mutationFn: loginUser,
 		onError: (err) => {
-			setError(err);
+			setError(err.message);
 		},
 		onSuccess: (data) => {
-			console.log(data);
+			console.log("user", data);
 		},
 	});
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		console.log(form);
-		// mutation.mutate(form);
+		// console.log(form);
+		mutation.mutate(form);
 	};
 
 	useEffect(() => {
@@ -47,6 +47,30 @@ const Signin = () => {
 		}
 		return () => clearTimeout(timeout);
 	}, [error]);
+
+	useEffect(() => {
+		let timeout;
+		if (mutation.isSuccess) {
+			timeout = setTimeout(() => {
+				sessionStorage.setItem("token", mutation.data.token);
+				sessionStorage.setItem("user", JSON.stringify(mutation.data.user));
+				sessionStorage.setItem(
+					"email",
+					JSON.stringify(mutation.data.user.credentials.email)
+				);
+
+				if (mutation.data.user.accountStatus.emailVerified) {
+					window.location.href = "/verifyemail";
+				} else if (mutation.data.user.accountStatus.twoFaActivated) {
+					window.location.href = "/twofa";
+				} else {
+					window.location.href = "/dashboard";
+				}
+				mutation.reset();
+			}, 3000);
+		}
+		return () => clearTimeout(timeout);
+	}, [mutation.isSuccess]);
 
 	return (
 		<section className="p-3 bg-slate-50 relative h-screen">

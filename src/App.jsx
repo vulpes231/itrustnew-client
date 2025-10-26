@@ -3,6 +3,7 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import {
 	Contact,
+	Dashboard,
 	Landing,
 	Personal,
 	Signin,
@@ -10,8 +11,10 @@ import {
 	Verifymail,
 	Verifyotp,
 } from "./pages";
+import { getAccessToken } from "./constants";
 
 const App = () => {
+	const token = getAccessToken();
 	return (
 		<div>
 			{/* <Navbar /> */}
@@ -23,6 +26,10 @@ const App = () => {
 				<Route path="/personal" element={<Personal />} />
 				<Route path="/verifyemail" element={<Verifymail />} />
 				<Route path="/twofa" element={<Verifyotp />} />
+				<Route
+					path="/dashboard"
+					element={!token ? <Signin /> : <Dashboard />}
+				/>
 			</Routes>
 		</div>
 	);

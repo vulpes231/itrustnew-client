@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import { IoMdMail } from "react-icons/io";
 import { Logo } from "../components";
+import { useMutation } from "@tanstack/react-query";
+import { verifyTwoFaCode } from "../services/verifyService";
 
 const styles = {
 	input:
@@ -15,6 +17,17 @@ const Verifyotp = () => {
 		secondCode: "",
 		thirdCode: "",
 		fourthCode: "",
+	});
+	const [error, setError] = useState("");
+
+	const mutation = useMutation({
+		mutationFn: verifyTwoFaCode,
+		onError: (err) => {
+			console.log(err);
+		},
+		onSuccess: (data) => {
+			console.log(data);
+		},
 	});
 
 	const inputRefs = [useRef(null), useRef(null), useRef(null), useRef(null)];
@@ -70,8 +83,10 @@ const Verifyotp = () => {
 
 		if (verificationCode.length === 4) {
 			console.log("Verification code:", verificationCode);
+			const formData = { code: verificationCode };
+			mutation.mutate(formData);
 		} else {
-			alert("Please enter the complete 4-digit code");
+			setError("Please enter the complete 4-digit code");
 		}
 	};
 
@@ -108,9 +123,7 @@ const Verifyotp = () => {
 					className="bg-white p-6 flex flex-col items-center justify-center gap-4 text-center max-w-lg mx-auto w-full shadow-sm rounded-md"
 				>
 					<IoMdMail className="w-20 h-20 bg-gray-200 rounded-full p-4 text-[#5162be]" />
-					<h3 className="font-semibold text-2xl lg:text-3xl">
-						Verify your email
-					</h3>
+					<h3 className="font-semibold text-2xl lg:text-3xl">Verify Login</h3>
 					<small className="text-[#878a99]">
 						Please enter the 4 digit code sent to exa**e@**c.com
 					</small>
