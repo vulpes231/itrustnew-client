@@ -1,6 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import { IoMdMail } from "react-icons/io";
-import { Logo } from "../components";
+import { Errortoast, Loadingmodal, Logo, Successtoast } from "../components";
+import { useMutation } from "@tanstack/react-query";
+import { sendEmailCode } from "../services/authService";
+import { formatEmail } from "../constants";
+import { verifyMailCode } from "../services/verifyService";
 
 const styles = {
 	input:
@@ -10,11 +14,33 @@ const styles = {
 };
 
 const Verifymail = () => {
+	const email = sessionStorage.getItem("email");
 	const [form, setForm] = useState({
 		firstCode: "",
 		secondCode: "",
 		thirdCode: "",
 		fourthCode: "",
+	});
+	const [error, setError] = useState("");
+
+	const mutation = useMutation({
+		mutationFn: () => sendEmailCode(email),
+		onError: (err) => {
+			console.log(err);
+		},
+		onSuccess: (data) => {
+			console.log(data);
+		},
+	});
+
+	const submitMutation = useMutation({
+		mutationFn: verifyMailCode,
+		onError: (err) => {
+			console.log(err);
+		},
+		onSuccess: (data) => {
+			console.log(data);
+		},
 	});
 
 	const inputRefs = [useRef(null), useRef(null), useRef(null), useRef(null)];
@@ -70,8 +96,10 @@ const Verifymail = () => {
 
 		if (verificationCode.length === 4) {
 			console.log("Verification code:", verificationCode);
+			const formData = { code: verificationCode };
+			submitMutation.mutate(formData);
 		} else {
-			alert("Please enter the complete 4-digit code");
+			setError("Invalid OTP!");
 		}
 	};
 
@@ -95,6 +123,45 @@ const Verifymail = () => {
 
 	const isFormComplete = Object.values(form).every((code) => code.length === 1);
 
+	useEffect(() => {
+		if (email) {
+			mutation.mutate();
+		}
+	}, [email]);
+
+	console.log(email);
+
+	const formattedMail = formatEmail(email);
+
+	useEffect(() => {
+		if (mutation.isError) {
+			setError(mutation.isError);
+		} else if (submitMutation.isError) {
+			setError(submitMutation.isError);
+		}
+	}, [mutation.isError, submitMutation.isError]);
+
+	useEffect(() => {
+		if (error) {
+			const timeout = setTimeout(() => {
+				mutation.reset();
+				submitMutation.reset();
+			}, 3000);
+			return () => clearTimeout(timeout);
+		}
+	}, [error]);
+
+	useEffect(() => {
+		if (submitMutation.isSuccess) {
+			const timeout = setTimeout(() => {
+				mutation.reset();
+				submitMutation.reset();
+				window.location.href = "/dashboard";
+			}, 3000);
+			return () => clearTimeout(timeout);
+		}
+	}, [submitMutation.isSuccess]);
+
 	return (
 		<section className="p-3 bg-slate-50 relative min-h-screen">
 			<div className="bg-[#5162be]/90 absolute w-full h-[350px] top-0 right-0 left-0 bottom-0 z-0 backdrop-blur-sm" />
@@ -113,7 +180,7 @@ const Verifymail = () => {
 						Verify your email
 					</h3>
 					<small className="text-[#878a99]">
-						Please enter the 4 digit code sent to exa**e@**c.com
+						Please enter the 4 digit code sent to {formattedMail}
 					</small>
 
 					<div className="flex items-center gap-4 w-full max-w-xs">
@@ -164,6 +231,25 @@ const Verifymail = () => {
 					</h6>
 				</div>
 			</div>
+			{submitMutation.isSuccess && (
+				<Successtoast
+					msg={"Email verified."}
+					duration={3000}
+					onClose={submitMutation.reset()}
+				/>
+			)}
+			{error && (
+				<Errortoast
+					msg={error}
+					duration={3000}
+					onClose={() => {
+						setError("");
+						mutation.reset();
+						submitMutation.reset();
+					}}
+				/>
+			)}
+			{submitMutation.isPending && <Loadingmodal />}
 		</section>
 	);
 };

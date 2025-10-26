@@ -51,3 +51,15 @@ export function getAccessToken() {
 
 export const devUrl = "http://localhost:5000";
 export const liveUrl = "https://trustcloud.server";
+
+export const formatEmail = (email) => {
+	if (!email || typeof email !== "string") return "";
+
+	const parts = email.split("@");
+	if (parts.length !== 2) return email; // Not a valid email format
+
+	const [username, domain] = parts;
+
+	// Show first 2 characters, then ***, then the domain
+	return `${username.slice(0, 2)}***@${domain}`;
+};

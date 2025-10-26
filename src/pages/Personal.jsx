@@ -21,10 +21,10 @@ const Personal = () => {
 	const navigate = useNavigate();
 	const [form, setForm] = useState({
 		dob: "",
-		currency: "",
+		currencyId: "",
 		experience: "",
 		employment: "",
-		nationality: "",
+		nationalityId: "",
 		referral: "",
 	});
 	const [apiError, setApiError] = useState("");
@@ -40,7 +40,8 @@ const Personal = () => {
 			console.log(data);
 		},
 		onError: (err) => {
-			setApiError(err);
+			console.log("Full error object:", err);
+			setApiError(err.message);
 		},
 	});
 
@@ -79,7 +80,7 @@ const Personal = () => {
 
 		const formData = { ...contactForm, ...userForm, ...form };
 		console.log(formData);
-		// mutation.mutate(formData);
+		mutation.mutate(formData);
 	}
 
 	function handlePrev() {
@@ -96,11 +97,21 @@ const Personal = () => {
 	useEffect(() => {
 		if (mutation.isSuccess) {
 			const timeout = setTimeout(() => {
+				sessionStorage.setItem("token", mutation.data);
+				sessionStorage.setItem("email", userForm.email);
+				sessionStorage.removeItem("contactForm");
+				sessionStorage.removeItem("userForm");
 				navigate("/verifyemail");
 			}, 3000);
 			return () => clearTimeout(timeout);
 		}
 	}, [mutation.isSuccess]);
+
+	useEffect(() => {
+		if (apiError) {
+			console.log(apiError);
+		}
+	}, [apiError]);
 
 	return (
 		<section className="p-3 bg-slate-50 relative">
@@ -134,9 +145,9 @@ const Personal = () => {
 						<Customselect
 							label={"currency"}
 							onChange={(e) => handleFormChange(e, form, setForm)}
-							value={form.currency}
-							name={"currency"}
-							error={error.currency}
+							value={form.currencyId}
+							name={"currencyId"}
+							error={error.currencyId}
 							options={currencies}
 						/>
 					</span>
@@ -172,9 +183,9 @@ const Personal = () => {
 						<Customselect
 							label={"nationality"}
 							onChange={(e) => handleFormChange(e, form, setForm)}
-							value={form.nationality}
-							name={"nationality"}
-							error={error.nationality}
+							value={form.nationalityId}
+							name={"nationalityId"}
+							error={error.nationalityId}
 							options={nationalities}
 						/>
 						<Custominput

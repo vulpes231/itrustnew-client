@@ -27,7 +27,7 @@ const Customselect = ({
 					${pallete?.borders?.light || "border-gray-300"} 
 					${error ? "border-red-500" : ""}`}
 			>
-				<option value="">select {name}</option>
+				<option value="">select {label}</option>
 				{options &&
 					options.length > 0 &&
 					options.map((opt) => {

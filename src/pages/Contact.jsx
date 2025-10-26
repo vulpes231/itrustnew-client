@@ -19,11 +19,11 @@ const Contact = () => {
 	}
 
 	const [form, setForm] = useState({
-		country: savedContactForm?.country || "",
+		countryId: savedContactForm?.countryId || "",
 		phone: savedContactForm?.phone || "",
 		street: savedContactForm?.street || "",
 		city: savedContactForm?.city || "",
-		state: savedContactForm?.state || "",
+		stateId: savedContactForm?.stateId || "",
 		zipcode: savedContactForm?.zipcode || "",
 	});
 
@@ -45,9 +45,9 @@ const Contact = () => {
 		isError: getStatesError,
 		error: statesError,
 	} = useQuery({
-		queryFn: () => getFilteredStates(form.country),
-		queryKey: ["states", form.country],
-		enabled: !!form.country,
+		queryFn: () => getFilteredStates(form.countryId),
+		queryKey: ["states", form.countryId],
+		enabled: !!form.countryId,
 	});
 
 	function handleNext(e) {
@@ -105,9 +105,9 @@ const Contact = () => {
 						<Customselect
 							label={"Country"}
 							onChange={(e) => handleFormChange(e, form, setForm)}
-							value={form.country}
-							name={"country"}
-							error={error.country}
+							value={form.countryId}
+							name={"countryId"}
+							error={error.countryId}
 							options={countries}
 						/>
 						<Custominput
@@ -129,9 +129,9 @@ const Contact = () => {
 						<Customselect
 							label={"state"}
 							onChange={(e) => handleFormChange(e, form, setForm)}
-							value={form.state}
-							name={"state"}
-							error={error.state}
+							value={form.stateId}
+							name={"stateId"}
+							error={error.stateId}
 							options={states}
 						/>
 					</span>
