@@ -3,6 +3,7 @@ import Customselect from "./Customselect";
 import Loadingmodal from "./Loadingmodal";
 import Logo from "./Logo";
 import Navbar from "./Navbar";
+import Pageheader from "./Pageheader";
 import Authnav from "./dash/Authnav";
 import Mobilemenu from "./nav/Mobilemenu";
 import Errortoast from "./toast/Errortoast";
@@ -18,4 +19,5 @@ export {
 	Errortoast,
 	Successtoast,
 	Loadingmodal,
+	Pageheader,
 };
