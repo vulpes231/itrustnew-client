@@ -4,6 +4,7 @@ import Loadingmodal from "./Loadingmodal";
 import Logo from "./Logo";
 import Navbar from "./Navbar";
 import Pageheader from "./Pageheader";
+import Portfolio from "./content/Portfolio";
 import Authnav from "./dash/Authnav";
 import Mobilemenu from "./nav/Mobilemenu";
 import Errortoast from "./toast/Errortoast";
@@ -20,4 +21,5 @@ export {
 	Successtoast,
 	Loadingmodal,
 	Pageheader,
+	Portfolio,
 };
