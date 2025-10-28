@@ -76,14 +76,13 @@ const Authnav = () => {
 	return (
 		<motion.header
 			className={`fixed top-0 left-0 w-full bg-white text-gray-600 flex items-center justify-center z-40 transition-all duration-300 ${
-				isScrolled ? "shadow-lg" : "shadow-sm"
+				isScrolled ? "shadow-lg" : "shadow-none border-b border-gray-300"
 			}`}
 			initial="hidden"
 			animate="visible"
 			variants={navVariants}
 		>
 			<nav className="flex items-center justify-between py-4 px-5 md:px-8 w-full max-w-8xl">
-				{/* Left Section - Menu and Search */}
 				<div className="flex items-center gap-3 md:gap-4">
 					<motion.button
 						onClick={toggleSidebar}

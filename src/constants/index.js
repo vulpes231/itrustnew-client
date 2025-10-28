@@ -67,3 +67,70 @@ export const formatEmail = (email) => {
 	// Show first 2 characters, then ***, then the domain
 	return `${username.slice(0, 2)}***@${domain}`;
 };
+
+export const assets = [
+	{
+		id: "btc",
+		name: "bitcoin",
+		price: 111400,
+		symbol: "btc",
+		percentChange: 2.3,
+		img: "",
+	},
+	{
+		id: "eth",
+		name: "ethereum",
+		price: 3900,
+		symbol: "eth",
+		percentChange: 1.8,
+		img: "",
+	},
+	{
+		id: "usdt",
+		name: "tether",
+		price: 1000,
+		symbol: "usdt",
+		percentChange: 1.1,
+		img: "",
+	},
+	{
+		id: "neo",
+		name: "neo",
+		price: 1000,
+		symbol: "neo",
+		percentChange: -3.3,
+		img: "",
+	},
+	{
+		id: "ada",
+		name: "cardano",
+		price: 2500,
+		symbol: "ada",
+		percentChange: 1.5,
+		img: "",
+	},
+	{
+		id: "sol",
+		name: "solana",
+		price: 8500,
+		symbol: "sol",
+		percentChange: 4.2,
+		img: "",
+	},
+	{
+		id: "doge",
+		name: "dogecoin",
+		price: 800,
+		symbol: "doge",
+		percentChange: -1.2,
+		img: "",
+	},
+	{
+		id: "dot",
+		name: "polkadot",
+		price: 3200,
+		symbol: "dot",
+		percentChange: 0.8,
+		img: "",
+	},
+];
