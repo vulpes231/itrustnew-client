@@ -8,7 +8,7 @@ const style = {
 
 const Assettable = () => {
 	return (
-		<div className="bg-white rounded-md shadow-sm overflow-auto">
+		<div className="bg-white rounded-md shadow-sm overflow-auto pb-10">
 			<div className="flex items-center justify-between w-full mb-4">
 				<h3 className="font-semibold text-gray-800 p-6">Assets</h3>
 			</div>
@@ -31,7 +31,17 @@ const Assettable = () => {
 									<td className={style.td}>{asset.name}</td>
 									<td className={style.td}>${asset.price.toLocaleString()}</td>
 									<td className={style.td}>coin name</td>
-									<td className={style.td}>{asset.percentChange}</td>
+									<td className={style.td}>
+										<span
+											className={`${
+												asset.percentChange > 0
+													? "text-green-500"
+													: "text-red-500"
+											}`}
+										>
+											{asset.percentChange}%
+										</span>
+									</td>
 
 									<td className={style.td}>
 										<span className="py-1 px-2 bg-[#5162be]/10 text-[#5162be] rounded-sm text-sm capitalize">

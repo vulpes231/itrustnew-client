@@ -7,7 +7,7 @@ const Market = () => {
 	return (
 		<div className="flex flex-col gap-6 w-full px-6">
 			<Slider />
-			<div>
+			<div className="flex flex-col gap-6 lg:flex-row">
 				<div className="lg:w-2/3 w-full">
 					<Assettable />
 				</div>

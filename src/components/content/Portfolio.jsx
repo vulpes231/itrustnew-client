@@ -46,7 +46,7 @@ const Portfolio = () => {
 		<div className="flex flex-col gap-6 lg:flex-row">
 			{/* Stats and Chartview section - comes first on mobile, right on desktop */}
 			<div className="flex flex-col gap-6 w-full lg:w-2/3 lg:order-2">
-				<div className="flex flex-col gap-6 lg:flex-row">
+				<div className="flex flex-col gap-6 lg:flex-row overflow-clip">
 					{stats.map((stat) => {
 						return (
 							<div
