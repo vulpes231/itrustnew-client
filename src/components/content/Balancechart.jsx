@@ -21,13 +21,14 @@ const Balancechart = () => {
 	};
 
 	const getIcon = (name) => {
+		const iconClass = "text-lg";
 		switch (name) {
 			case "cash":
-				return <MdWallet className="mr-2" />;
+				return <MdWallet className={iconClass} />;
 			case "auto":
-				return <CgDollar className="mr-2" />;
+				return <CgDollar className={iconClass} />;
 			case "brokerage":
-				return <MdSavings className="mr-2" />;
+				return <MdSavings className={iconClass} />;
 			default:
 				return null;
 		}
@@ -47,18 +48,18 @@ const Balancechart = () => {
 				backgroundColor: [
 					"#22c55e", // cash - green
 					"#eab308", // auto - yellow
-					"#5162be", // brokerage - blue
+					"#5126be", // brokerage - blue (updated to match your brand)
 				],
-				borderColor: ["#22c55e", "#eab308", "#5162be"],
+				borderColor: "#ffffff",
+				borderWidth: 3,
 				hoverBackgroundColor: [
 					"#16a34a", // darker green
 					"#ca8a04", // darker yellow
-					"#3a4a9e", // darker blue
+					"#401d95", // darker blue
 				],
-
-				borderWidth: 2,
-
-				hoverOffset: 8,
+				hoverBorderColor: "#ffffff",
+				hoverBorderWidth: 3,
+				hoverOffset: 12,
 			},
 		],
 	};
@@ -66,7 +67,7 @@ const Balancechart = () => {
 	const chartOptions = {
 		responsive: true,
 		maintainAspectRatio: false,
-		cutout: "65%",
+		cutout: "68%",
 		plugins: {
 			legend: {
 				display: false,
@@ -81,29 +82,45 @@ const Balancechart = () => {
 						}: $${value.toLocaleString()} (${percentage}%)`;
 					},
 				},
-				backgroundColor: "rgba(0, 0, 0, 0.7)",
-				titleColor: "#fff",
-				bodyColor: "#fff",
-				borderColor: "#5162be",
+				backgroundColor: "rgba(255, 255, 255, 0.95)",
+				titleColor: "#5126be",
+				bodyColor: "#374151",
+				borderColor: "#e5e7eb",
 				borderWidth: 1,
+				boxPadding: 10,
+				cornerRadius: 8,
+				titleFont: {
+					size: 12,
+					weight: "bold",
+				},
+				bodyFont: {
+					size: 13,
+					weight: "600",
+				},
+				padding: 12,
 			},
+		},
+		animation: {
+			animateScale: true,
+			animateRotate: true,
 		},
 	};
 
 	return (
-		<div className="flex flex-col items-center justify-between bg-white shadow-md p-6 rounded-sm text-gray-600">
-			<div className="flex items-center justify-between w-full mb-4">
-				<h3 className="font-semibold text-gray-800">Balances</h3>
+		<div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+			{/* Header */}
+			<div className="flex items-center justify-between w-full mb-6">
+				<h3 className="font-bold text-xl text-gray-900">Balances</h3>
 				<select
 					name="defaultWallet"
-					className="border p-1 border-gray-300 rounded-sm text-sm"
+					className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#5126be] focus:border-[#5126be] transition-all duration-200 bg-white"
 					onChange={(e) => handleChange(e)}
 					value={defaultWallet}
 				>
 					{wallets.map((wallet) => {
 						return (
 							<option key={wallet.id} value={wallet.id}>
-								{wallet.name}
+								{wallet.name.charAt(0).toUpperCase() + wallet.name.slice(1)}
 							</option>
 						);
 					})}
@@ -111,33 +128,68 @@ const Balancechart = () => {
 			</div>
 
 			{/* Doughnut chart */}
-			<div className="relative w-48 h-48 mb-6">
+			<div className="relative w-56 h-56 mx-auto mb-8">
 				<Doughnut data={chartData} options={chartOptions} />
 				<div className="absolute inset-0 flex flex-col items-center justify-center">
-					<span className="text-2xl font-bold text-gray-800">
+					<span className="text-3xl font-bold text-gray-900">
 						${totalBalance.toLocaleString()}
 					</span>
-					<span className="text-sm text-gray-500">Total</span>
+					<span className="text-sm text-gray-500 font-medium">
+						Total Balance
+					</span>
 				</div>
 			</div>
 
-			<div className="flex flex-col gap-3 w-full">
+			{/* Wallet list */}
+			<div className="space-y-4">
 				{wallets.map((wallet) => {
 					const percentage = ((wallet.balance / totalBalance) * 100).toFixed(1);
+					const getColorClass = (id) => {
+						switch (id) {
+							case "cash":
+								return "text-green-600";
+							case "auto":
+								return "text-yellow-600";
+							case "brokerage":
+								return "text-[#5126be]";
+							default:
+								return "text-gray-600";
+						}
+					};
+
 					return (
 						<div
-							className="flex items-center justify-between py-2 border-b border-gray-200"
+							className="flex items-center justify-between p-4 rounded-lg hover:bg-gray-50 transition-all duration-200 group cursor-pointer border border-transparent hover:border-gray-200"
 							key={wallet.id}
 						>
-							<span className="flex items-center text-sm font-medium">
-								{getIcon(wallet.id)}
-								<span className="capitalize">{wallet.name}</span>
+							<span className="flex items-center gap-3">
+								<div
+									className={`p-2 rounded-xl bg-gray-100 group-hover:scale-110 transition-transform duration-200 ${getColorClass(
+										wallet.id
+									).replace("text", "bg")}/10`}
+								>
+									<div className={getColorClass(wallet.id)}>
+										{getIcon(wallet.id)}
+									</div>
+								</div>
+								<div className="flex flex-col">
+									<span className="font-semibold text-gray-900 capitalize">
+										{wallet.name}
+									</span>
+									<span className="text-sm text-gray-500">
+										{percentage}% of portfolio
+									</span>
+								</div>
 							</span>
 							<div className="text-right">
-								<span className="block text-sm font-semibold">
+								<span className="block font-bold text-gray-900 text-lg">
 									${wallet.balance.toLocaleString()}
 								</span>
-								<span className="block text-xs text-gray-500">
+								<span
+									className={`text-xs font-medium px-2 py-1 rounded-full ${getColorClass(
+										wallet.id
+									).replace("text", "bg")}/10 ${getColorClass(wallet.id)}`}
+								>
 									{percentage}%
 								</span>
 							</div>

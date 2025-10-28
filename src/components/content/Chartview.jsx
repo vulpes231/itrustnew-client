@@ -9,6 +9,7 @@ import {
 	Title,
 	Tooltip,
 	Legend,
+	Filler,
 } from "chart.js";
 
 // Register ChartJS components
@@ -19,33 +20,40 @@ ChartJS.register(
 	LineElement,
 	Title,
 	Tooltip,
-	Legend
+	Legend,
+	Filler
 );
 
 const style = {
-	btn: "capitalize bg-[#5162be]/20 h-[30px] w-[30px] text-center rounded-sm text-[#5162be] text-sm md:text-md hover:bg-[#5162be]/50 hover:text-white",
+	btn: "capitalize px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 hover:scale-105 active:scale-95",
+	container:
+		"bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden",
+	header:
+		"flex items-center justify-between px-6 py-4 border-b border-gray-100",
+	title: "font-bold text-xl text-gray-900",
+	chartContainer: "p-6 h-80 lg:h-96",
 };
 
 const supportedViews = [
 	{
 		id: "1h",
-		name: "1h",
+		name: "1H",
 	},
 	{
 		id: "7d",
-		name: "7d",
+		name: "7D",
 	},
 	{
 		id: "1m",
-		name: "1m",
+		name: "1M",
 	},
 	{
 		id: "1y",
-		name: "1y",
+		name: "1Y",
 	},
 	{
 		id: "all",
-		name: "all",
+		name: "All",
 	},
 ];
 
@@ -86,22 +94,39 @@ const Chartview = () => {
 
 	const { labels, data } = generateData();
 
+	// Calculate current value and percentage change
+	const currentValue = data[data.length - 1];
+	const previousValue = data[0];
+	const percentageChange = (
+		((currentValue - previousValue) / previousValue) *
+		100
+	).toFixed(2);
+
 	const chartData = {
 		labels,
 		datasets: [
 			{
 				label: "Portfolio Value",
 				data: data,
-				borderColor: "#5162be",
-				backgroundColor: "rgba(81, 98, 190, 0.1)",
-				borderWidth: 2,
+				borderColor: "#5126be",
+				backgroundColor: (context) => {
+					const ctx = context.chart.ctx;
+					const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+					gradient.addColorStop(0, "rgba(81, 38, 190, 0.3)");
+					gradient.addColorStop(1, "rgba(81, 38, 190, 0.05)");
+					return gradient;
+				},
+				borderWidth: 3,
 				fill: true,
 				tension: 0.4,
-				pointBackgroundColor: "#5162be",
+				pointBackgroundColor: "#5126be",
 				pointBorderColor: "#ffffff",
-				pointBorderWidth: 2,
-				pointRadius: 4,
+				pointBorderWidth: 3,
+				pointRadius: 0,
 				pointHoverRadius: 6,
+				pointHoverBackgroundColor: "#5126be",
+				pointHoverBorderColor: "#ffffff",
+				pointHoverBorderWidth: 3,
 			},
 		],
 	};
@@ -116,25 +141,49 @@ const Chartview = () => {
 			tooltip: {
 				mode: "index",
 				intersect: false,
-				backgroundColor: "rgba(0, 0, 0, 0.7)",
-				titleColor: "#fff",
-				bodyColor: "#fff",
-				borderColor: "#5162be",
+				backgroundColor: "rgba(255, 255, 255, 0.95)",
+				titleColor: "#5126be",
+				bodyColor: "#374151",
+				borderColor: "#e5e7eb",
 				borderWidth: 1,
+				boxPadding: 8,
+				cornerRadius: 8,
+				displayColors: false,
+				callbacks: {
+					label: function (context) {
+						return `$${context.parsed.y.toLocaleString()}`;
+					},
+					title: function (tooltipItems) {
+						return tooltipItems[0].label;
+					},
+				},
+				titleFont: {
+					size: 12,
+					weight: "bold",
+				},
+				bodyFont: {
+					size: 14,
+					weight: "bold",
+				},
 			},
 		},
 		scales: {
 			y: {
-				beginAtZero: true,
+				beginAtZero: false,
 				max: 100000,
+				grid: {
+					color: "rgba(0, 0, 0, 0.05)",
+					drawBorder: false,
+				},
 				ticks: {
-					stepSize: 5000,
+					stepSize: 25000,
 					callback: function (value) {
 						return value === 0 ? "$0" : `$${value / 1000}k`;
 					},
-				},
-				grid: {
-					color: "rgba(0, 0, 0, 0.1)",
+					font: {
+						size: 11,
+					},
+					color: "#6b7280",
 				},
 			},
 			x: {
@@ -142,29 +191,55 @@ const Chartview = () => {
 					display: false,
 				},
 				ticks: {
-					color: "#666",
+					color: "#6b7280",
+					font: {
+						size: 11,
+					},
 				},
 			},
 		},
 		interaction: {
-			mode: "nearest",
-			axis: "x",
+			mode: "index",
 			intersect: false,
+		},
+		animations: {
+			tension: {
+				duration: 1000,
+				easing: "linear",
+			},
 		},
 	};
 
 	return (
-		<div className="bg-white shadow-sm p-2 rounded-sm">
-			<span className="flex items-center justify-between p-3">
-				<h3 className="font-semibold text-gray-800">Portfolio Growth</h3>
-				<span className="flex items-center gap-2 capitalize">
+		<div className={style.container}>
+			<div className={style.header}>
+				<div className="flex flex-col gap-1">
+					<h3 className={style.title}>Portfolio Growth</h3>
+					<div className="flex items-center gap-3">
+						<span className="text-2xl font-bold text-gray-900">
+							${currentValue.toLocaleString()}
+						</span>
+						<span
+							className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-sm font-semibold ${
+								percentageChange >= 0
+									? "bg-green-50 text-green-700 border border-green-200"
+									: "bg-red-50 text-red-700 border border-red-200"
+							}`}
+						>
+							{percentageChange >= 0 ? "↗" : "↘"} {Math.abs(percentageChange)}%
+						</span>
+					</div>
+				</div>
+				<span className="flex items-center gap-1 bg-gray-100 p-1 rounded-lg">
 					{supportedViews.map((btn) => {
 						return (
 							<button
 								onClick={() => setView(btn.id)}
 								key={btn.id}
 								className={`${style.btn} ${
-									btn.id === view ? "bg-[#5162be]/80 text-white" : ""
+									btn.id === view
+										? "bg-[#5126be] text-white shadow-lg shadow-[#5126be]/25"
+										: "text-gray-600 hover:text-gray-800 hover:bg-white"
 								}`}
 								type="button"
 							>
@@ -173,8 +248,8 @@ const Chartview = () => {
 						);
 					})}
 				</span>
-			</span>
-			<div className="p-4 h-80">
+			</div>
+			<div className={style.chartContainer}>
 				<Line data={chartData} options={chartOptions} />
 			</div>
 		</div>
