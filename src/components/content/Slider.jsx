@@ -8,7 +8,10 @@ import { useQuery } from "@tanstack/react-query";
 import { getAssets } from "../../services/assetService";
 
 const Slider = () => {
-	const queryData = { limit: 8 };
+	const queryData = {
+		limit: 10,
+		sortBy: "priceData.changePercent",
+	};
 	const swiperRef = useRef(null);
 
 	const {
@@ -17,7 +20,7 @@ const Slider = () => {
 		isError,
 	} = useQuery({
 		queryFn: () => getAssets(queryData),
-		queryKey: ["assets"],
+		queryKey: ["assets", "gainers"],
 	});
 
 	// Update Swiper when data loads

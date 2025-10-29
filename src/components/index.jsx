@@ -4,6 +4,7 @@ import Loadingmodal from "./Loadingmodal";
 import Logo from "./Logo";
 import Navbar from "./Navbar";
 import Pageheader from "./Pageheader";
+import Dashfoot from "./content/Dashfoot";
 import Market from "./content/Market";
 import Portfolio from "./content/Portfolio";
 import Authnav from "./dash/Authnav";
@@ -15,6 +16,7 @@ export {
 	Authnav,
 	Navbar,
 	Mobilemenu,
+	Dashfoot,
 	Logo,
 	Custominput,
 	Customselect,

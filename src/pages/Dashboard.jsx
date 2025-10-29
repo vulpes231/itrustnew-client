@@ -1,6 +1,12 @@
 import React from "react";
 import { getAccountSettings } from "../constants";
-import { Authnav, Market, Pageheader, Portfolio } from "../components";
+import {
+	Authnav,
+	Dashfoot,
+	Market,
+	Pageheader,
+	Portfolio,
+} from "../components";
 
 const Dashboard = () => {
 	const savedUserSettings = getAccountSettings();
@@ -12,8 +18,11 @@ const Dashboard = () => {
 			<div className="p-6">
 				<Portfolio />
 			</div>
-			<div className="pb-5">
+			<div className="">
 				<Market />
+			</div>
+			<div className="pb-5">
+				<Dashfoot />
 			</div>
 		</section>
 	);

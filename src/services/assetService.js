@@ -1,10 +1,10 @@
 import { api } from "../features/interceptors";
 
 export async function getAssets(queryData) {
-	const { page, filterBy, limit } = queryData;
+	const { page, filterBy, limit, sortBy } = queryData;
 	try {
 		const response = await api.get(
-			`/asset/?page=${page}&filterBy=${filterBy}&limit=${limit}`
+			`/asset/?page=${page}&filterBy=${filterBy}&limit=${limit}&sortBy=${sortBy}`
 		);
 		return response.data.data;
 	} catch (error) {

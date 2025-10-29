@@ -20,14 +20,17 @@ const style = {
 };
 
 const Assettable = () => {
-	const queryData = { limit: 9 };
+	const queryData = {
+		limit: 10,
+		sortBy: "priceData.volume",
+	};
 	const {
 		data: assets = [],
 		isLoading,
 		isError,
 	} = useQuery({
 		queryFn: () => getAssets(queryData),
-		queryKey: ["assets"],
+		queryKey: ["assets", "popular"],
 	});
 	return (
 		<div className={style.tableContainer}>
