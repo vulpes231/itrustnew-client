@@ -1,6 +1,6 @@
 import { api } from "../features/interceptors";
 
-export async function getAsset(queryData) {
+export async function getAssets(queryData) {
 	const { page, filterBy, limit } = queryData;
 	try {
 		const response = await api.get(

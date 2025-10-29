@@ -1,5 +1,7 @@
 import React from "react";
 import { assets } from "../../constants";
+import { getAssets } from "../../services/assetService";
+import { useQuery } from "@tanstack/react-query";
 
 const style = {
 	td: "px-4 md:px-6 py-3 md:py-4 whitespace-nowrap text-center text-sm md:text-base font-medium text-gray-700 border-b border-gray-100",
@@ -18,6 +20,15 @@ const style = {
 };
 
 const Assettable = () => {
+	const queryData = { limit: 9 };
+	const {
+		data: assets = [],
+		isLoading,
+		isError,
+	} = useQuery({
+		queryFn: () => getAssets(queryData),
+		queryKey: ["assets"],
+	});
 	return (
 		<div className={style.tableContainer}>
 			<div className={style.header}>
@@ -43,7 +54,7 @@ const Assettable = () => {
 					<tbody className="divide-y divide-gray-100">
 						{assets && assets.length > 0 ? (
 							assets.map((asset) => {
-								const isPositive = asset.percentChange > 0;
+								const isPositive = asset?.priceData?.changePercent > 0;
 								return (
 									<tr
 										key={asset.id}
@@ -52,28 +63,33 @@ const Assettable = () => {
 										<td className={`${style.td} text-left`}>
 											<div className="flex items-center gap-3">
 												<div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-[#5126be]/20 to-[#5126be]/10 rounded-full flex items-center justify-center">
-													<span className="text-xs md:text-sm font-bold text-[#5126be]">
-														{asset.symbol?.charAt(0).toUpperCase() ||
-															asset.name?.charAt(0).toUpperCase()}
-													</span>
+													<img
+														src={asset?.imageUrl}
+														alt=""
+														className="w-[40px]"
+													/>
 												</div>
 												<div className="flex flex-col">
 													<span className="font-semibold text-gray-900 text-sm md:text-base">
-														{asset.name}
+														{`${
+															asset?.name.length > 13
+																? `${asset?.name.slice(0, 16)}...`
+																: asset?.name
+														}`}
 													</span>
 													<span className="text-xs text-gray-500 uppercase">
-														{asset.symbol}
+														{asset?.symbol}
 													</span>
 												</div>
 											</div>
 										</td>
 										<td className={`${style.td} font-mono`}>
-											${asset.price.toLocaleString()}
+											${asset.priceData?.current?.toLocaleString()}
 										</td>
 										<td
 											className={`${style.td} font-mono text-gray-600 uppercase`}
 										>
-											{asset.symbol}
+											{asset?.symbol}
 										</td>
 										<td className={style.td}>
 											<span
@@ -83,7 +99,9 @@ const Assettable = () => {
 														: style.negativeChange
 												}
 											>
-												{isPositive ? "↗" : "↘"} {asset.percentChange}%
+												{isPositive ? "↗" : "↘"}{" "}
+												{parseFloat(asset?.priceData?.changePercent).toFixed(2)}
+												%
 											</span>
 										</td>
 										<td className={style.td}>

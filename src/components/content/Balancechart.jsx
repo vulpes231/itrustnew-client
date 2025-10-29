@@ -1,17 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CgDollar } from "react-icons/cg";
 import { MdSavings, MdWallet } from "react-icons/md";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 
-// Register ChartJS components
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const wallets = [
-	{ id: "cash", name: "cash", balance: 5030 },
-	{ id: "auto", name: "auto", balance: 2250 },
-	{ id: "brokerage", name: "brokerage", balance: 6400 },
-];
+import { useQuery } from "@tanstack/react-query";
+import { getUserWallets } from "../../services/walletService";
 
 const Balancechart = () => {
 	const [defaultWallet, setDefaultWallet] = useState("cash");
@@ -25,7 +21,7 @@ const Balancechart = () => {
 		switch (name) {
 			case "cash":
 				return <MdWallet className={iconClass} />;
-			case "auto":
+			case "automated investing":
 				return <CgDollar className={iconClass} />;
 			case "brokerage":
 				return <MdSavings className={iconClass} />;
@@ -34,17 +30,31 @@ const Balancechart = () => {
 		}
 	};
 
-	// Calculate total balance
-	const totalBalance = wallets.reduce((sum, wallet) => sum + wallet.balance, 0);
+	const {
+		data: wallets = [], // Provide default empty array
+		isLoading: getWalletsLoading,
+		isError: getWalletError,
+	} = useQuery({
+		queryFn: getUserWallets,
+		queryKey: ["wallets"],
+	});
 
-	// Chart data
+	// Calculate total balance safely
+	const totalBalance = wallets.reduce(
+		(sum, wallet) => sum + (wallet?.totalBalance || 0),
+		0
+	);
+
+	// Safe chart data calculation
 	const chartData = {
-		labels: wallets.map(
-			(wallet) => wallet.name.charAt(0).toUpperCase() + wallet.name.slice(1)
+		labels: wallets.map((wallet) =>
+			wallet?.name
+				? wallet.name.charAt(0).toUpperCase() + wallet.name.slice(1)
+				: ""
 		),
 		datasets: [
 			{
-				data: wallets.map((wallet) => wallet.balance),
+				data: wallets.map((wallet) => wallet?.totalBalance || 1),
 				backgroundColor: [
 					"#22c55e", // cash - green
 					"#eab308", // auto - yellow
@@ -76,7 +86,8 @@ const Balancechart = () => {
 				callbacks: {
 					label: function (context) {
 						const value = context.parsed;
-						const percentage = ((value / totalBalance) * 100).toFixed(1);
+						const percentage =
+							totalBalance > 0 ? ((value / totalBalance) * 100).toFixed(1) : 0;
 						return `${
 							context.label
 						}: $${value.toLocaleString()} (${percentage}%)`;
@@ -106,6 +117,28 @@ const Balancechart = () => {
 		},
 	};
 
+	// Show loading state
+	if (getWalletsLoading) {
+		return (
+			<div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+				<div className="flex items-center justify-center h-64">
+					<div className="text-gray-500">Loading balances...</div>
+				</div>
+			</div>
+		);
+	}
+
+	// Show error state
+	if (getWalletError) {
+		return (
+			<div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+				<div className="flex items-center justify-center h-64">
+					<div className="text-red-500">Error loading balances</div>
+				</div>
+			</div>
+		);
+	}
+
 	return (
 		<div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
 			{/* Header */}
@@ -119,7 +152,7 @@ const Balancechart = () => {
 				>
 					{wallets.map((wallet) => {
 						return (
-							<option key={wallet.id} value={wallet.id}>
+							<option key={wallet._id} value={wallet._id}>
 								{wallet.name.charAt(0).toUpperCase() + wallet.name.slice(1)}
 							</option>
 						);
@@ -143,12 +176,16 @@ const Balancechart = () => {
 			{/* Wallet list */}
 			<div className="space-y-4">
 				{wallets.map((wallet) => {
-					const percentage = ((wallet.balance / totalBalance) * 100).toFixed(1);
-					const getColorClass = (id) => {
-						switch (id) {
+					const percentage =
+						totalBalance > 0
+							? ((wallet.totalBalance / totalBalance) * 100).toFixed(1)
+							: 0;
+
+					const getColorClass = (name) => {
+						switch (name) {
 							case "cash":
 								return "text-green-600";
-							case "auto":
+							case "automated investing":
 								return "text-yellow-600";
 							case "brokerage":
 								return "text-[#5126be]";
@@ -160,16 +197,16 @@ const Balancechart = () => {
 					return (
 						<div
 							className="flex items-center justify-between p-4 rounded-lg hover:bg-gray-50 transition-all duration-200 group cursor-pointer border border-transparent hover:border-gray-200"
-							key={wallet.id}
+							key={wallet._id}
 						>
 							<span className="flex items-center gap-3">
 								<div
 									className={`p-2 rounded-xl bg-gray-100 group-hover:scale-110 transition-transform duration-200 ${getColorClass(
-										wallet.id
+										wallet.name
 									).replace("text", "bg")}/10`}
 								>
-									<div className={getColorClass(wallet.id)}>
-										{getIcon(wallet.id)}
+									<div className={getColorClass(wallet.name)}>
+										{getIcon(wallet.name)}
 									</div>
 								</div>
 								<div className="flex flex-col">
@@ -183,12 +220,12 @@ const Balancechart = () => {
 							</span>
 							<div className="text-right">
 								<span className="block font-bold text-gray-900 text-lg">
-									${wallet.balance.toLocaleString()}
+									${wallet.totalBalance.toLocaleString()}
 								</span>
 								<span
 									className={`text-xs font-medium px-2 py-1 rounded-full ${getColorClass(
-										wallet.id
-									).replace("text", "bg")}/10 ${getColorClass(wallet.id)}`}
+										wallet.name
+									).replace("text", "bg")}/10 ${getColorClass(wallet.name)}`}
 								>
 									{percentage}%
 								</span>
