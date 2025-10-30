@@ -7,7 +7,7 @@ import { format, isToday, isThisWeek, isThisMonth, isThisYear } from "date-fns";
 import numeral from "numeral";
 
 const style = {
-	tableContainer: "",
+	tableContainer: "w-full flex-1",
 	header:
 		"flex flex-col sm:flex-row sm:items-center justify-between w-full px-4 md:px-6 py-4 border-b border-gray-100 gap-3",
 	title: "font-bold text-lg md:text-xl text-gray-900",
