@@ -32,6 +32,22 @@ export async function withdrawFunds(formData) {
 	}
 }
 
+export async function transferFunds(formData) {
+	try {
+		const response = await api.post("/transaction/transfer", formData);
+		// console.log(response.data);
+		return response.data.data;
+	} catch (error) {
+		const errMsg =
+			error.response?.data?.message ||
+			error.response?.data?.error ||
+			error.message ||
+			"Transfer failed. Please try again.";
+
+		throw new Error(errMsg);
+	}
+}
+
 export async function getUserTransactions() {
 	try {
 		const response = await api.get("/transaction");

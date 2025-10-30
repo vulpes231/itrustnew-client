@@ -10,6 +10,7 @@ import Verifymail from "./Verifymail";
 import Verifyotp from "./Verifyotp";
 import Wallet from "./Wallet";
 import Withdraw from "./Withdraw";
+import Transfer from "./Transfer";
 
 export {
 	Signin,
@@ -24,4 +25,5 @@ export {
 	Transaction,
 	Deposit,
 	Withdraw,
+	Transfer,
 };

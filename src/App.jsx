@@ -10,6 +10,7 @@ import {
 	Signin,
 	Signup,
 	Transaction,
+	Transfer,
 	Verifymail,
 	Verifyotp,
 	Wallet,
@@ -45,6 +46,7 @@ const App = () => {
 				/>
 				<Route path="/deposit" element={!token ? <Signin /> : <Deposit />} />
 				<Route path="/withdraw" element={!token ? <Signin /> : <Withdraw />} />
+				<Route path="/transfer" element={!token ? <Signin /> : <Transfer />} />
 			</Routes>
 		</div>
 	);

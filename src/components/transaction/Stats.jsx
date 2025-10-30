@@ -5,6 +5,7 @@ import { GrMoney } from "react-icons/gr";
 import { motion } from "framer-motion";
 import numeral from "numeral";
 import { useNavigate } from "react-router-dom";
+import { FaExchangeAlt } from "react-icons/fa";
 
 const stats = [
 	{
@@ -194,6 +195,17 @@ const Stats = () => {
 						Deposit
 					</motion.button>
 
+					<motion.button
+						className="text-sm font-medium bg-green-600 text-white rounded-lg h-[44px] px-6 py-2 capitalize shadow-md hover:shadow-lg transition-shadow duration-200 flex items-center gap-2"
+						variants={buttonVariants}
+						whileHover="hover"
+						whileTap="tap"
+						onClick={() => navigate("/transfer")}
+						type="button"
+					>
+						<FaExchangeAlt className="w-4 h-4" />
+						Transfer
+					</motion.button>
 					<motion.button
 						className="text-sm font-medium bg-red-500 text-white rounded-lg h-[44px] px-6 py-2 capitalize shadow-md hover:shadow-lg transition-shadow duration-200 flex items-center gap-2"
 						variants={buttonVariants}
