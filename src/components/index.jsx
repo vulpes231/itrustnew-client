@@ -11,6 +11,8 @@ import Authnav from "./dash/Authnav";
 import Mobilemenu from "./nav/Mobilemenu";
 import Errortoast from "./toast/Errortoast";
 import Successtoast from "./toast/Successtoast";
+import History from "./transaction/History";
+import Stats from "./transaction/Stats";
 
 export {
 	Authnav,
@@ -26,4 +28,6 @@ export {
 	Pageheader,
 	Portfolio,
 	Market,
+	Stats,
+	History,
 };

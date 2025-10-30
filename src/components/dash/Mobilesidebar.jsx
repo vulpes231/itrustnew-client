@@ -14,10 +14,10 @@ const sidebarLinks = [
 	{ id: "dashboard", name: "dashboard", path: "/dashboard" },
 	{ id: "wallet", name: "wallet", path: "/wallet" },
 	{ id: "market", name: "market", path: "/market" },
-	{ id: "transactions", name: "transactions", path: "/transactions" },
-	{ id: "positions", name: "positions", path: "/positions" },
+	{ id: "transactions", name: "transactions", path: "/transaction" },
+	{ id: "positions", name: "positions", path: "/position" },
 	{ id: "savings", name: "savings", path: "/savings" },
-	{ id: "investments", name: "investments", path: "/investments" },
+	{ id: "investments", name: "investments", path: "/investment" },
 ];
 
 const Mobilesidebar = ({ onClose, isOpen }) => {
@@ -193,7 +193,7 @@ const Mobilesidebar = ({ onClose, isOpen }) => {
 								>
 									<Link
 										to={link.path}
-										className="flex items-center gap-3 capitalize p-3 rounded-lg text-gray-700 font-medium text-base hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200"
+										className="flex items-center gap-3 capitalize p-3 rounded-lg text-gray-700 font-medium text-base hover:bg-[#5162be]/10 hover:text-[#5162be] transition-colors duration-200"
 										onClick={onClose}
 									>
 										{getIcon(link.name)}

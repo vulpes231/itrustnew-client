@@ -4,8 +4,10 @@ import Landing from "./Landing";
 import Personal from "./Personal";
 import Signin from "./Signin";
 import Signup from "./Signup";
+import Transaction from "./Transaction";
 import Verifymail from "./Verifymail";
 import Verifyotp from "./Verifyotp";
+import Wallet from "./Wallet";
 
 export {
 	Signin,
@@ -16,4 +18,6 @@ export {
 	Verifymail,
 	Verifyotp,
 	Dashboard,
+	Wallet,
+	Transaction,
 };

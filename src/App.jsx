@@ -8,8 +8,10 @@ import {
 	Personal,
 	Signin,
 	Signup,
+	Transaction,
 	Verifymail,
 	Verifyotp,
+	Wallet,
 } from "./pages";
 import { getAccessToken } from "./constants";
 
@@ -29,6 +31,11 @@ const App = () => {
 				<Route
 					path="/dashboard"
 					element={!token ? <Signin /> : <Dashboard />}
+				/>
+				<Route path="/wallet" element={!token ? <Signin /> : <Wallet />} />
+				<Route
+					path="/transaction"
+					element={!token ? <Signin /> : <Transaction />}
 				/>
 			</Routes>
 		</div>
