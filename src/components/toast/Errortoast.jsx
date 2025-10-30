@@ -51,7 +51,7 @@ const Errortoast = ({ msg, onClose, duration = 5000 }) => {
 	return (
 		<AnimatePresence>
 			<motion.div
-				className="flex items-start gap-3 absolute top-[70px] right-[10px] bg-red-50 px-4 py-3 rounded-lg border-l-4 border-red-500 shadow-lg max-w-sm z-50"
+				className="flex items-start gap-3 fixed top-[150px] right-[10px] bg-red-50 px-4 py-3 rounded-lg border-l-4 border-red-500 shadow-lg max-w-sm z-50"
 				variants={toastVariants}
 				initial="hidden"
 				animate="visible"

@@ -55,9 +55,9 @@ const paymentMethods = [
 const Deposit = () => {
 	const [form, setForm] = useState({
 		method: "",
-		type: "deposit",
 		network: "",
 		amount: "",
+		account: "",
 	});
 	const [error, setError] = useState("");
 	const [success, setSuccess] = useState("");
@@ -109,8 +109,9 @@ const Deposit = () => {
 			setError("Maximum deposit amount is $100,000");
 			return;
 		}
+		form.account = cashWallet?.name;
 		console.log(form);
-		// mutation.mutate();
+		mutation.mutate();
 	};
 
 	useEffect(() => {
@@ -128,7 +129,8 @@ const Deposit = () => {
 			const timeout = setTimeout(() => {
 				setSuccess("");
 				mutation.reset();
-			}, 5000);
+				window.location.href = "/transaction";
+			}, 3000);
 			return () => clearTimeout(timeout);
 		}
 	}, [success]);

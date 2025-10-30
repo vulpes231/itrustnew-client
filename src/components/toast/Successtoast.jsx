@@ -69,7 +69,7 @@ const Successtoast = ({ msg, onClose, duration = 4000 }) => {
 	return (
 		<AnimatePresence>
 			<motion.div
-				className="flex items-start gap-3 absolute top-[10px] right-[10px] bg-green-50 px-4 py-3 rounded-lg border-l-4 border-green-500 shadow-lg max-w-sm z-50"
+				className="flex items-start gap-3 fixed top-[150px] right-[10px] bg-green-50 px-4 py-3 rounded-lg border-l-4 border-green-500 shadow-lg max-w-sm z-50"
 				variants={toastVariants}
 				initial="hidden"
 				animate="visible"
