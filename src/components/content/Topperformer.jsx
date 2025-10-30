@@ -22,7 +22,7 @@ const style = {
 const Topperformer = () => {
 	const [timeFrame, setTimeFrame] = useState("1h");
 	const queryData = {
-		limit: 8,
+		limit: 6,
 		sortBy: "priceData.changePercent",
 	};
 

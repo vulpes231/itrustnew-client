@@ -8,6 +8,7 @@ import {
 	MdSearch,
 	MdFilterList,
 } from "react-icons/md";
+
 import { SiBitcoin, SiEthereum, SiTether } from "react-icons/si";
 import { CgDollar } from "react-icons/cg";
 import { MdSavings, MdWallet } from "react-icons/md";
