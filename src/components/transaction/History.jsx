@@ -23,9 +23,11 @@ const History = () => {
 			</div>
 			<table className="min-w-full">
 				<thead>
-					{headers.map((head, index) => {
-						return <th key={index}>{head}</th>;
-					})}
+					<tr>
+						{headers.map((head, index) => {
+							return <th key={index}>{head}</th>;
+						})}
+					</tr>
 				</thead>
 			</table>
 		</div>

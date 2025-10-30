@@ -4,6 +4,8 @@ import Loadingmodal from "./Loadingmodal";
 import Logo from "./Logo";
 import Navbar from "./Navbar";
 import Pageheader from "./Pageheader";
+import Pagetitle from "./Pagetitle";
+import ScrollToTop from "./Srolltotop";
 import Dashfoot from "./content/Dashfoot";
 import Market from "./content/Market";
 import Portfolio from "./content/Portfolio";
@@ -30,4 +32,6 @@ export {
 	Market,
 	Stats,
 	History,
+	ScrollToTop,
+	Pagetitle,
 };

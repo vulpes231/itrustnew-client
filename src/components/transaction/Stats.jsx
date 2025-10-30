@@ -4,6 +4,7 @@ import { IoBriefcaseOutline } from "react-icons/io5";
 import { GrMoney } from "react-icons/gr";
 import { motion } from "framer-motion";
 import numeral from "numeral";
+import { useNavigate } from "react-router-dom";
 
 const stats = [
 	{
@@ -76,6 +77,7 @@ const Stats = () => {
 			scale: 0.95,
 		},
 	};
+	const navigate = useNavigate();
 
 	return (
 		<div className="flex flex-col gap-6">
@@ -185,6 +187,8 @@ const Stats = () => {
 						variants={buttonVariants}
 						whileHover="hover"
 						whileTap="tap"
+						onClick={() => navigate("/deposit")}
+						type="button"
 					>
 						<LuPiggyBank className="w-4 h-4" />
 						Deposit
@@ -195,6 +199,8 @@ const Stats = () => {
 						variants={buttonVariants}
 						whileHover="hover"
 						whileTap="tap"
+						onClick={() => navigate("/withdraw")}
+						type="button"
 					>
 						<GrMoney className="w-4 h-4" />
 						Withdraw

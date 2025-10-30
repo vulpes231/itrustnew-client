@@ -5,6 +5,7 @@ import {
 	Dashfoot,
 	Market,
 	Pageheader,
+	Pagetitle,
 	Portfolio,
 } from "../components";
 
@@ -14,6 +15,7 @@ const Dashboard = () => {
 	return (
 		<section className="bg-slate-100 min-h-screen ">
 			<Authnav />
+			<Pagetitle />
 			<Pageheader page={"portfolio"} />
 			<div className="p-6">
 				<Portfolio />

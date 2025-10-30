@@ -1,9 +1,10 @@
 import React from "react";
 // import { Navbar } from "./components";
-import { Route, Routes } from "react-router-dom";
+import { Route, Router, Routes } from "react-router-dom";
 import {
 	Contact,
 	Dashboard,
+	Deposit,
 	Landing,
 	Personal,
 	Signin,
@@ -12,14 +13,19 @@ import {
 	Verifymail,
 	Verifyotp,
 	Wallet,
+	Withdraw,
 } from "./pages";
 import { getAccessToken } from "./constants";
+import { ScrollToTop } from "./components";
 
 const App = () => {
 	const token = getAccessToken();
 	return (
 		<div>
 			{/* <Navbar /> */}
+
+			<ScrollToTop />
+
 			<Routes>
 				<Route path="/" element={<Landing />} />
 				<Route path="/signup" element={<Signup />} />
@@ -37,6 +43,8 @@ const App = () => {
 					path="/transaction"
 					element={!token ? <Signin /> : <Transaction />}
 				/>
+				<Route path="/deposit" element={!token ? <Signin /> : <Deposit />} />
+				<Route path="/withdraw" element={!token ? <Signin /> : <Withdraw />} />
 			</Routes>
 		</div>
 	);
