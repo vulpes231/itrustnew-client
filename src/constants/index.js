@@ -54,7 +54,7 @@ export function getAccountSettings() {
 }
 
 export const devUrl = "http://localhost:5000";
-export const liveUrl = "https://trustcloud.server";
+export const liveUrl = "https://trustserver.cloud";
 
 export const formatEmail = (email) => {
 	if (!email || typeof email !== "string") return "";
