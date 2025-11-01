@@ -56,8 +56,8 @@ const Balancechart = () => {
 			{
 				data: wallets.map((wallet) => wallet?.totalBalance || 1),
 				backgroundColor: [
-					"#22c55e", // cash - green
-					"#eab308", // auto - yellow
+					"#eab308", // cash - green
+					"#22c55e", // auto - yellow
 					"#5126be", // brokerage - blue (updated to match your brand)
 				],
 				borderColor: "#ffffff",

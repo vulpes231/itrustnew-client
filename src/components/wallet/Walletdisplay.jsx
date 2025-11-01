@@ -201,7 +201,7 @@ const Walletdisplay = () => {
 								</motion.div>
 
 								{/* Progress bar for available balance */}
-								<motion.div
+								{/* <motion.div
 									className="w-full bg-gray-200 rounded-full h-2 mt-4"
 									initial={{ opacity: 0 }}
 									animate={{ opacity: 1 }}
@@ -223,7 +223,7 @@ const Walletdisplay = () => {
 											ease: "easeOut",
 										}}
 									/>
-								</motion.div>
+								</motion.div> */}
 							</motion.div>
 						))}
 				</AnimatePresence>

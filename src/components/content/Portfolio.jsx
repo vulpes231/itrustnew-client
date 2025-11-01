@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { CgArrowUp, CgDollar } from "react-icons/cg";
 import Chartview from "./Chartview";
 import { BsArrowDown } from "react-icons/bs";
 import numeral from "numeral";
 import Balancechart from "./Balancechart";
+import { motion } from "framer-motion";
 
 const stats = [
 	{
@@ -26,7 +27,37 @@ const stats = [
 	},
 ];
 
+const AnimatedBalance = ({ value, duration = 2 }) => {
+	const [displayValue, setDisplayValue] = useState(0);
+
+	useEffect(() => {
+		let start = 0;
+		const end = value;
+		const increment = end / (duration * 60); // 60 frames per second
+
+		const timer = setInterval(() => {
+			start += increment;
+			if (start >= end) {
+				setDisplayValue(end);
+				clearInterval(timer);
+			} else {
+				setDisplayValue(start);
+			}
+		}, 1000 / 60); // 60 FPS
+
+		return () => clearInterval(timer);
+	}, [value, duration]);
+
+	return <span>${numeral(displayValue).format("0,0.00")}</span>;
+};
+
 const Portfolio = () => {
+	const [isVisible, setIsVisible] = useState(false);
+
+	useEffect(() => {
+		setIsVisible(true);
+	}, []);
+
 	const getIcon = (id) => {
 		switch (id) {
 			case "tv":
@@ -51,12 +82,17 @@ const Portfolio = () => {
 			<div className="flex flex-col gap-6 w-full lg:w-2/3 lg:order-2">
 				{/* Stats Cards */}
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
-					{stats.map((stat) => {
+					{stats.map((stat, index) => {
 						const isPositive = stat.percent > 0;
 						return (
-							<div
+							<motion.div
 								key={stat.id}
 								className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 p-6 border border-gray-100 hover:border-gray-200 group"
+								initial={{ opacity: 0, y: 20 }}
+								animate={
+									isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
+								}
+								transition={{ duration: 0.5, delay: index * 0.1 }}
 							>
 								<div className="flex items-center justify-between">
 									<div className="flex items-center gap-4">
@@ -70,7 +106,7 @@ const Portfolio = () => {
 												{stat.name}
 											</h3>
 											<h3 className="text-2xl lg:text-3xl font-bold text-gray-800">
-												${numeral(stat.balance).format("0,0.00")}
+												<AnimatedBalance value={stat.balance} duration={2} />
 											</h3>
 										</div>
 									</div>
@@ -94,7 +130,7 @@ const Portfolio = () => {
 										</span>
 									</span>
 								</div>
-							</div>
+							</motion.div>
 						);
 					})}
 				</div>

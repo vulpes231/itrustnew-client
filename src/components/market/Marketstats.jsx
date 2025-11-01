@@ -76,10 +76,10 @@ const Marketstats = () => {
 					variants={cardVariants}
 				>
 					<div className="flex-1">
-						<p className="text-sm text-gray-600 mb-2 font-medium">
+						<p className="text-sm text-gray-400 mb-2 font-medium">
 							{stat.name}
 						</p>
-						<h3 className="text-2xl font-bold text-gray-600">
+						<h3 className="text-2xl font-medium text-gray-600">
 							{numeral(stat.balance).format("$0,0.00")}k
 						</h3>
 					</div>
@@ -94,7 +94,7 @@ const Marketstats = () => {
 								: stat.id === "todaysell"
 								? "bg-red-100"
 								: null
-						} rounded-full p-3`}
+						} rounded-sm p-3`}
 					>
 						{stat.icon}
 					</div>

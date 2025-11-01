@@ -13,6 +13,7 @@ import Portfolio from "./content/Portfolio";
 import RecentActivity from "./content/Recentactivity";
 import Slider from "./content/Slider";
 import Authnav from "./dash/Authnav";
+import Marketchart from "./market/Marketchart";
 import Marketstats from "./market/Marketstats";
 import Mobilemenu from "./nav/Mobilemenu";
 import Errortoast from "./toast/Errortoast";
@@ -44,4 +45,5 @@ export {
 	RecentActivity,
 	Walletdisplay,
 	Marketstats,
+	Marketchart,
 };
