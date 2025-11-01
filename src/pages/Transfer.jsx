@@ -226,7 +226,7 @@ const Transfer = () => {
 	}
 
 	return (
-		<section className="bg-slate-50 min-h-screen text-slate-600">
+		<section className="bg-slate-100 min-h-screen text-slate-600">
 			<Authnav />
 			<Pageheader
 				page={"Transfer"}

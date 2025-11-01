@@ -83,7 +83,7 @@ const Pageheader = ({ page, description }) => {
 			{/* Left Section - Page Title */}
 			<div className="flex flex-col gap-1">
 				<motion.h3
-					className="font-bold uppercase text-lg md:text-xl text-gray-800"
+					className="font-bold capitalize text-lg md:text-xl text-gray-800"
 					variants={itemVariants}
 				>
 					{page}

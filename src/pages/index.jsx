@@ -11,6 +11,7 @@ import Verifyotp from "./Verifyotp";
 import Wallet from "./Wallet";
 import Withdraw from "./Withdraw";
 import Transfer from "./Transfer";
+import Market from "./Market";
 
 export {
 	Signin,
@@ -26,4 +27,5 @@ export {
 	Deposit,
 	Withdraw,
 	Transfer,
+	Market,
 };

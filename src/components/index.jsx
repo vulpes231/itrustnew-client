@@ -13,6 +13,7 @@ import Portfolio from "./content/Portfolio";
 import RecentActivity from "./content/Recentactivity";
 import Slider from "./content/Slider";
 import Authnav from "./dash/Authnav";
+import Marketstats from "./market/Marketstats";
 import Mobilemenu from "./nav/Mobilemenu";
 import Errortoast from "./toast/Errortoast";
 import Successtoast from "./toast/Successtoast";
@@ -42,4 +43,5 @@ export {
 	Pagetitle,
 	RecentActivity,
 	Walletdisplay,
+	Marketstats,
 };

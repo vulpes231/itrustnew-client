@@ -163,7 +163,7 @@ const Verifymail = () => {
 	}, [submitMutation.isSuccess]);
 
 	return (
-		<section className="p-3 bg-slate-50 relative min-h-screen">
+		<section className="p-3 bg-slate-100 relative min-h-screen">
 			<div className="bg-[#5162be]/90 absolute w-full h-[350px] top-0 right-0 left-0 bottom-0 z-0 backdrop-blur-sm" />
 			<div className="flex flex-col gap-10 z-10 relative">
 				<span className="pt-10 flex items-center flex-col justify-center gap-3">

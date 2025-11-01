@@ -6,6 +6,7 @@ import {
 	Dashboard,
 	Deposit,
 	Landing,
+	Market,
 	Personal,
 	Signin,
 	Signup,
@@ -47,6 +48,7 @@ const App = () => {
 				<Route path="/deposit" element={!token ? <Signin /> : <Deposit />} />
 				<Route path="/withdraw" element={!token ? <Signin /> : <Withdraw />} />
 				<Route path="/transfer" element={!token ? <Signin /> : <Transfer />} />
+				<Route path="/market" element={!token ? <Signin /> : <Market />} />
 			</Routes>
 		</div>
 	);
