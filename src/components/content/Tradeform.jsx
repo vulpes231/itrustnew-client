@@ -1,11 +1,15 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Customselect from "../Customselect";
 import { handleFormChange } from "../../constants";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { getAssetInfo, searchAssets } from "../../services/assetService";
 import { motion, AnimatePresence } from "framer-motion";
 import numeral from "numeral";
 import { getUserWallets } from "../../services/walletService";
+import { openPosition } from "../../services/tradeService";
+import Loadingmodal from "../Loadingmodal";
+import Errortoast from "../toast/Errortoast";
+import Successtoast from "../toast/Successtoast";
 
 const tradeBtns = [
 	{ id: "buy", name: "buy" },
@@ -61,6 +65,7 @@ const Tradeform = () => {
 	const [selectedAsset, setSelectedAsset] = useState(null);
 	const [debouncedQuery, setDebouncedQuery] = useState("");
 	const [selectedWallet, setSelectedWallet] = useState("");
+	const [error, setError] = useState("");
 
 	const [form, setForm] = useState({
 		assetId: "",
@@ -142,6 +147,13 @@ const Tradeform = () => {
 		}, 200);
 	};
 
+	const mutation = useMutation({
+		mutationFn: openPosition,
+		onError: (err) => {
+			setError(err.message);
+		},
+	});
+
 	const handleFormSubmit = (e) => {
 		e.preventDefault();
 
@@ -149,7 +161,7 @@ const Tradeform = () => {
 		console.log("Trade form submitted:", {
 			...form,
 		});
-
+		mutation.mutate(form);
 		// Add your trade submission logic here
 	};
 
@@ -192,10 +204,21 @@ const Tradeform = () => {
 	const totalAmount = calculateTotal();
 
 	useEffect(() => {
-		if (selectedWallet) {
-			console.log(selectedWallet);
+		if (error) {
+			const timeout = setTimeout(() => setError(""), 5000);
+			return () => clearTimeout(timeout);
 		}
-	}, [selectedWallet]);
+	}, [error]);
+
+	useEffect(() => {
+		if (mutation.isSuccess) {
+			const timeout = setTimeout(() => {
+				mutation.reset();
+				window.location.reload();
+			}, 5000);
+			return () => clearTimeout(timeout);
+		}
+	}, [mutation.isSuccess]);
 
 	return (
 		<div className={style.container}>
@@ -508,6 +531,17 @@ const Tradeform = () => {
 					{selectedAction} Now
 				</button>
 			</form>
+			{mutation.isPending && <Loadingmodal />}
+			{error && (
+				<Errortoast msg={error} duration={3000} onClose={() => setError("")} />
+			)}
+			{mutation.isSuccess && (
+				<Successtoast
+					msg={"Position opened successfully."}
+					duration={3000}
+					onClose={() => mutation.reset()}
+				/>
+			)}
 		</div>
 	);
 };

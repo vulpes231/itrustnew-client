@@ -112,7 +112,7 @@ const Transfer = () => {
 		// }
 		console.log(form);
 
-		// mutation.mutate();
+		mutation.mutate();
 	};
 
 	useEffect(() => {
@@ -123,11 +123,20 @@ const Transfer = () => {
 	}, [error]);
 
 	useEffect(() => {
-		if (success) {
-			const timeout = setTimeout(() => setSuccess(""), 5000);
+		if (mutation.isSuccess) {
+			const timeout = setTimeout(() => {
+				mutation.reset();
+				window.location.href = "/wallet";
+			}, 5000);
 			return () => clearTimeout(timeout);
 		}
-	}, [success]);
+	}, [mutation.isSuccess]);
+
+	// useEffect(() => {
+	// 	if (wallets) {
+	// 		console.log(wallets);
+	// 	}
+	// });
 
 	const getWalletIcon = (walletName) => {
 		const name = walletName?.toLowerCase();
